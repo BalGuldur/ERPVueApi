@@ -5,6 +5,13 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# Добавлено мной
+gem 'omniauth-vkontakte'
+gem 'jwt'
+
+gem 'versionist'
+
+gem 'rack-cors', require: 'rack/cors'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
