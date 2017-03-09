@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     puts "auth_hash #{auth_hash.as_json}"
     puts "session #{session.as_json}"
     fullname = auth_hash["info"]["name"]
-    payload = auth_hash.as_json
+    payload = auth_hash.as_json.merge!({admin: false})
     # TODO: Добавить шифрование JWT с помощью RSA
     token = JWT.encode payload, Rails.application.secrets.jwt_secret, 'HS256'
     # TODO: Вынести localhost:8080 в файл настройки
