@@ -31,6 +31,7 @@ class V1::TechCardsController < V1::BaseController
         @tech_card_items << TechCardItem.create(qty: item[:qty], ingredient_id: item[:ingredient][:id], tech_card: @tech_card)
       end
     end
+    @tech_card.update(tech_card_params)
     render json: {tech_card: @tech_card, tech_card_items: @tech_card_items}
   end
 

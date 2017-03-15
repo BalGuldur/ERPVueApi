@@ -8,11 +8,11 @@ class StoreItem < ApplicationRecord
 
     if ingredient.store_item.present?
       old_store_item = ingredient.store_item
-      old_store_item.price = ((old_store_item.price * old_store_item.remains) + price) / (old_store_item.remains + remains)
-      old_store_item.remains = old_store_item.remains + remains
+      old_store_item.price = ((old_store_item.price * old_store_item.remains) + price.to_f) / (old_store_item.remains + remains.to_f)
+      old_store_item.remains = old_store_item.remains + remains.to_f
       return old_store_item
     else
-      store_item = StoreItem.new(ingredient: ingredient, price: price / remains, remains: remains)
+      store_item = StoreItem.new(ingredient: ingredient, price: price.to_f / remains.to_f, remains: remains.to_f)
       return store_item
     end
   end
