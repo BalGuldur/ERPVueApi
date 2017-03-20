@@ -1,5 +1,6 @@
 class TechCard < ApplicationRecord
   has_many :tech_card_items
+  has_and_belongs_to_many :store_menu_categories
 
   def self.front_view
     f_v = {}
@@ -14,6 +15,6 @@ class TechCard < ApplicationRecord
   end
 
   def front_view
-    as_json(methods: [:tech_card_item_ids])
+    as_json(methods: [:tech_card_item_ids, :store_menu_category_ids])
   end
 end

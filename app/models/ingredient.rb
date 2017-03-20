@@ -1,5 +1,6 @@
 class Ingredient < ApplicationRecord
   has_one :store_item, dependent: :destroy
+  has_and_belongs_to_many :store_menu_categories
 
   def self.front_view
     f_v = {}
@@ -14,7 +15,7 @@ class Ingredient < ApplicationRecord
   end
 
   def front_view
-    as_json(methods: [:store_item_id])
+    as_json(methods: [:store_item_id, :store_menu_category_ids])
   end
 
   def store_item_id

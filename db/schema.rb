@@ -10,16 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315085724) do
+ActiveRecord::Schema.define(version: 20170320123025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cash_boxes", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "discount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "ingredients", force: :cascade do |t|
     t.string   "title"
     t.string   "measure"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ingredients_store_menu_categories", id: false, force: :cascade do |t|
+    t.integer "store_menu_category_id", null: false
+    t.integer "ingredient_id",          null: false
+    t.index ["ingredient_id", "store_menu_category_id"], name: "ing_to_st_mn_cat", using: :btree
+    t.index ["store_menu_category_id", "ingredient_id"], name: "st_mn_cat_to_ing", using: :btree
   end
 
   create_table "store_items", force: :cascade do |t|
@@ -29,6 +43,19 @@ ActiveRecord::Schema.define(version: 20170315085724) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["ingredient_id"], name: "index_store_items_on_ingredient_id", using: :btree
+  end
+
+  create_table "store_menu_categories", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "store_menu_categories_tech_cards", id: false, force: :cascade do |t|
+    t.integer "store_menu_category_id", null: false
+    t.integer "tech_card_id",           null: false
+    t.index ["store_menu_category_id", "tech_card_id"], name: "st_mn_cat_tch_card", using: :btree
+    t.index ["tech_card_id", "store_menu_category_id"], name: "tch_card_st_mn_cat", using: :btree
   end
 
   create_table "tech_card_items", force: :cascade do |t|
