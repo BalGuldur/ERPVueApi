@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320123025) do
+ActiveRecord::Schema.define(version: 20170320224740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,31 @@ ActiveRecord::Schema.define(version: 20170320123025) do
     t.integer  "discount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "check_items", force: :cascade do |t|
+    t.integer  "discount"
+    t.string   "tech_card_title"
+    t.float    "tech_card_price"
+    t.integer  "qty"
+    t.float    "amount_paid"
+    t.integer  "tech_card_id"
+    t.integer  "check_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["check_id"], name: "index_check_items_on_check_id", using: :btree
+    t.index ["tech_card_id"], name: "index_check_items_on_tech_card_id", using: :btree
+  end
+
+  create_table "checks", force: :cascade do |t|
+    t.string   "client"
+    t.float    "summ"
+    t.string   "cash_box_title"
+    t.integer  "cash_box_discount"
+    t.integer  "cash_box_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["cash_box_id"], name: "index_checks_on_cash_box_id", using: :btree
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -75,6 +100,9 @@ ActiveRecord::Schema.define(version: 20170320123025) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "check_items", "checks"
+  add_foreign_key "check_items", "tech_cards"
+  add_foreign_key "checks", "cash_boxes"
   add_foreign_key "store_items", "ingredients"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"

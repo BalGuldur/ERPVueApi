@@ -1,6 +1,6 @@
-class StoreMenuCategory < ApplicationRecord
-  has_and_belongs_to_many :ingredients
-  has_and_belongs_to_many :tech_cards
+class Check < ApplicationRecord
+  has_many :check_items, dependent: :destroy
+  belongs_to :cash_box
 
   def self.front_view
     f_v = {}
@@ -15,6 +15,6 @@ class StoreMenuCategory < ApplicationRecord
   end
 
   def front_view
-    as_json(methods: [:ingredient_ids, :tech_card_ids])
+    as_json(methods: [:check_item_ids, :cash_box_id])
   end
 end
