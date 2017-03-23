@@ -7,6 +7,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       lang: 'ru',
       https: 1,
       image_size: 'original',
-      redirect_url: 'http://localhost:8080/vkauth'
+      redirect_url: Rails.application.secrets.vkontakte_redirect_uri
     }
 end
