@@ -8,8 +8,8 @@ class V1::ChecksController < V1::BaseController
   end
 
   def create
-    puts "check_params #{check_params.as_json}"
-    puts "check_items_params #{check_items_params.as_json}"
+    # puts "check_params #{check_params.as_json}"
+    # puts "check_items_params #{check_items_params.as_json}"
     @check = Check.new(check_params)
     check_items_params[:check_items].each do |check_item_param|
       @check_item = CheckItem.new(check_item_param)
