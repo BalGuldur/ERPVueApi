@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     end
     resources :tech_cards, only: [:create, :destroy, :update] do
       get 'index', on: :collection
+      put 'add_category', on: :member
+      put 'remove_category', on: :member
     end
     resources :ingredients, only: [:create, :destroy, :update] do
       get 'index', on: :collection
