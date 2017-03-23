@@ -8,18 +8,29 @@ class V1::TechCardsController < V1::BaseController
   end
 
   def create
-    puts "params #{params.as_json}"
-    puts "tech card params #{tech_card_params.as_json}"
-    puts "tech card items params #{tech_card_items_params.as_json}"
-    @tech_card = TechCard.create(tech_card_params)
+    # puts "params #{params.as_json}"
+    # puts "tech card params #{tech_card_params.as_json}"
+    # puts "tech card items params #{tech_card_items_params.as_json}"
+    # @tech_card = TechCard.create(tech_card_params)
+    # items = tech_card_items_params[:items]
+    # @tech_card_items = []
+    # items.each do |item|
+    #   if item[:qty].present? and item[:ingredient][:id].present?
+    #     @tech_card_items << TechCardItem.create(qty: item[:qty], ingredient_id: item[:ingredient][:id], tech_card: @tech_card)
+    #   end
+    # end
+    # render json: {tech_card: @tech_card, tech_card_items: @tech_card_items}
+    @tech_card = TechCard.new(tech_card_params)
     items = tech_card_items_params[:items]
-    @tech_card_items = []
     items.each do |item|
-      if item[:qty].present? and item[:ingredient][:id].present?
-        @tech_card_items << TechCardItem.create(qty: item[:qty], ingredient_id: item[:ingredient][:id], tech_card: @tech_card)
-      end
+      @new_item = TechCardItem.new(qty: item[:qty], ingredient_id: item[:ingredient][:id])
+      @tech_card.tech_card_items << @new_item
     end
-    render json: {tech_card: @tech_card, tech_card_items: @tech_card_items}
+    if @tech_card.save
+      render json: {tech_card: @tech_card.front_view, tech_card_items: @tech_card.tech_card_items.all.front_view}, status: :ok
+    else
+      render json: @tech_card.errors, status: 400
+    end
   end
 
   def update
