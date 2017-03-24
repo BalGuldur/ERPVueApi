@@ -12,6 +12,8 @@ module ERPVueApi
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.time_zone = 'Moscow'
+
     # Добавлено для обработки CORS запросов
     # TODO: Для production подгружать правильный список фильтров для CORS
     config.middleware.insert_before 0, Rack::Cors do

@@ -38,7 +38,7 @@ class V1::ChecksController < V1::BaseController
 
   def check_params
     # TODO: Подумать о параметрах, может передавать только id в cash_box
-    params.require(:check).permit(:client, :summ, :cash_box_id, :cash_box_title, :cash_box_discount)
+    params.require(:check).permit(:client, :summ, :cash_box_id, :cash_box_title, :cash_box_discount, :paidOn)
   end
 
   def check_items_params
