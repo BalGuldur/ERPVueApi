@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do
+    resources :inventories, only: [:create, :destroy, :update] do
+      get 'index', on: :collection
+      put 'done', on: :member
+    end
     resources :checks, only: [:create, :destroy, :update] do
       get 'index', on: :collection
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170324092831) do
+ActiveRecord::Schema.define(version: 20170328105153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,29 @@ ActiveRecord::Schema.define(version: 20170324092831) do
     t.index ["store_menu_category_id", "ingredient_id"], name: "st_mn_cat_to_ing", using: :btree
   end
 
+  create_table "inventories", force: :cascade do |t|
+    t.datetime "doDate"
+    t.integer  "diffQty"
+    t.float    "diffSumm"
+    t.string   "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "inventory_items", force: :cascade do |t|
+    t.integer  "inventory_id"
+    t.integer  "ingredient_id"
+    t.float    "qty"
+    t.text     "comment"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "store_item_id"
+    t.float    "diffQty"
+    t.float    "storeQty"
+    t.index ["ingredient_id"], name: "index_inventory_items_on_ingredient_id", using: :btree
+    t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id", using: :btree
+  end
+
   create_table "store_items", force: :cascade do |t|
     t.float    "price"
     t.float    "remains"
@@ -104,6 +127,8 @@ ActiveRecord::Schema.define(version: 20170324092831) do
   add_foreign_key "check_items", "checks"
   add_foreign_key "check_items", "tech_cards"
   add_foreign_key "checks", "cash_boxes"
+  add_foreign_key "inventory_items", "ingredients"
+  add_foreign_key "inventory_items", "inventories"
   add_foreign_key "store_items", "ingredients"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"

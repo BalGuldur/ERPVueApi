@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  doDate: 2017-03-27 11:35:49
+  diffQty: 1
+  diffSumm: 1.5
+  status: MyString
+
+two:
+  doDate: 2017-03-27 11:35:49
+  diffQty: 1
+  diffSumm: 1.5
+  status: MyString
