@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  waste: one
+  ingredient: one
+  store_item: one
+  storeItemPrice: 1.5
+  ingMeasure: MyString
+  qty: 1.5
+  price: 1.5
+
+two:
+  waste: two
+  ingredient: two
+  store_item: two
+  storeItemPrice: 1.5
+  ingMeasure: MyString
+  qty: 1.5
+  price: 1.5

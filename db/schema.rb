@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170328105153) do
+ActiveRecord::Schema.define(version: 20170330095405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,27 @@ ActiveRecord::Schema.define(version: 20170328105153) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "waste_items", force: :cascade do |t|
+    t.integer  "waste_id"
+    t.integer  "ingredient_id"
+    t.integer  "store_item_id"
+    t.float    "storeItemPrice"
+    t.string   "ingMeasure"
+    t.float    "qty"
+    t.float    "price"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["ingredient_id"], name: "index_waste_items_on_ingredient_id", using: :btree
+    t.index ["store_item_id"], name: "index_waste_items_on_store_item_id", using: :btree
+    t.index ["waste_id"], name: "index_waste_items_on_waste_id", using: :btree
+  end
+
+  create_table "wastes", force: :cascade do |t|
+    t.float    "summ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "check_items", "checks"
   add_foreign_key "check_items", "tech_cards"
   add_foreign_key "checks", "cash_boxes"
@@ -132,4 +153,7 @@ ActiveRecord::Schema.define(version: 20170328105153) do
   add_foreign_key "store_items", "ingredients"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"
+  add_foreign_key "waste_items", "ingredients"
+  add_foreign_key "waste_items", "store_items"
+  add_foreign_key "waste_items", "wastes"
 end
