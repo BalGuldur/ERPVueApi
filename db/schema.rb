@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330095405) do
+ActiveRecord::Schema.define(version: 20170331090801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,15 @@ ActiveRecord::Schema.define(version: 20170330095405) do
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id", using: :btree
   end
 
+  create_table "store_item_counters", force: :cascade do |t|
+    t.integer  "store_item_id"
+    t.float    "storeNewQty"
+    t.float    "storeOldQty"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["store_item_id"], name: "index_store_item_counters_on_store_item_id", using: :btree
+  end
+
   create_table "store_items", force: :cascade do |t|
     t.float    "price"
     t.float    "remains"
@@ -150,6 +159,7 @@ ActiveRecord::Schema.define(version: 20170330095405) do
   add_foreign_key "checks", "cash_boxes"
   add_foreign_key "inventory_items", "ingredients"
   add_foreign_key "inventory_items", "inventories"
+  add_foreign_key "store_item_counters", "store_items"
   add_foreign_key "store_items", "ingredients"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"

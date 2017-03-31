@@ -1,4 +1,6 @@
 class StoreItem < ApplicationRecord
+  after_update :set_counter
+  after_create :set_counter
   belongs_to :ingredient
 
   def self.add_supply params
@@ -31,5 +33,14 @@ class StoreItem < ApplicationRecord
 
   def front_view
     as_json
+  end
+
+  private
+
+  def set_counter
+    puts "remains was #{remains_was}"
+    puts "remains now #{remains}"
+    @store_item_counter = StoreItemCounter.new(store_item: self, storeOldQty: remains_was, storeNewQty: remains)
+    @store_item_counter.save
   end
 end

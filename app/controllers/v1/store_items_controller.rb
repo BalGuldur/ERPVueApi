@@ -8,18 +8,6 @@ class V1::StoreItemsController < V1::BaseController
   end
 
   def create
-    # ingredient = Ingredient.find(params[:ingredient_id])
-    # price = params[:price]
-    # remains = params[:remains]
-    #
-    # if ingredient.store_item.present?
-    #   old_store_item = ingredient.store_item
-    #   old_store_item.price = ((old_store_item.price * old_store_item.remains) + price) / (old_store_item.remains + remains)
-    #   old_store_item.remains = old_store_item.remains + remains
-    #   @store_item = old_store_item
-    # else
-    #   @store_item = StoreItem.new(ingredient: ingredient, price: price / remains, remains: remains)
-    # end
     @store_item = StoreItem.add_supply(store_item_params)
     if @store_item.save
       render json: @store_item, status: :ok
