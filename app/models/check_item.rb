@@ -23,6 +23,6 @@ class CheckItem < ApplicationRecord
   private
 
   def fix_store
-    tech_card.fix_store
+    tech_card.fix_store(qty: qty)
   end
 end

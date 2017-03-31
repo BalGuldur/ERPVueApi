@@ -20,14 +20,15 @@ class TechCard < ApplicationRecord
     as_json(methods: [:tech_card_item_ids, :store_menu_category_ids])
   end
 
-  def fix_store
-    tech_card_items.fix_store
+  def fix_store(qty: 1)
+    tech_card_items.fix_store(qty: qty)
   end
 
   private
 
   def unlink_check_items
     puts 'before destory'
-    check_items.update_all('tech_card_id = null')
+    # check_items.update_all('tech_card_id = null')
+    CheckItem.update(check_item_ids, [{tech_card: nil}])
   end
 end
