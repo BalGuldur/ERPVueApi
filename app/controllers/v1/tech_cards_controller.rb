@@ -1,5 +1,5 @@
 class V1::TechCardsController < V1::BaseController
-  before_filter :set_tech_card, only: [:destroy, :update, :add_category, :remove_category]
+  before_action :set_tech_card, only: [:destroy, :update, :add_category, :remove_category]
   before_action :set_category, only: [:add_category, :remove_category]
 
   def index

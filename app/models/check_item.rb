@@ -1,6 +1,8 @@
 class CheckItem < ApplicationRecord
+  after_create :fix_store
+
   belongs_to :check
-  belongs_to :tech_card
+  belongs_to :tech_card, required: false
 
   def self.front_view
     f_v = {}
@@ -16,5 +18,11 @@ class CheckItem < ApplicationRecord
 
   def front_view
     as_json(methods: [:tech_card_id])
+  end
+
+  private
+
+  def fix_store
+    tech_card.fix_store
   end
 end
