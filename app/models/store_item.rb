@@ -2,6 +2,8 @@ class StoreItem < ApplicationRecord
   after_update :set_counter
   after_create :set_counter
   belongs_to :ingredient
+  has_many :waste_items, dependent: :destroy
+  has_many :store_item_counters, dependent: :destroy
 
   def self.add_supply params
     ingredient = Ingredient.find(params[:ingredient_id])

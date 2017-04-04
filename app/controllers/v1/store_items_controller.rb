@@ -12,7 +12,7 @@ class V1::StoreItemsController < V1::BaseController
     if @store_item.save
       render json: @store_item, status: :ok
     else
-      render json: @store_itme, status: 404
+      render json: @store_item.errors, status: 404
     end
   end
 
