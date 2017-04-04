@@ -42,7 +42,13 @@ class StoreItem < ApplicationRecord
   def set_counter
     puts "remains was #{remains_was}"
     puts "remains now #{remains}"
-    @store_item_counter = StoreItemCounter.new(store_item: self, storeOldQty: remains_was, storeNewQty: remains)
+    @store_item_counter = StoreItemCounter.new(
+      store_item: self,
+      storeOldQty: remains_was,
+      storeNewQty: remains,
+      storeOldPrice: price_was,
+      storeNewPrice: price
+    )
     @store_item_counter.save
   end
 end
