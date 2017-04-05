@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do
-    resources :supplies, only: [:create]
+    resources :supplies, only: [:create] do
+      get 'index', on: :collection
+      put 'revert', on: :member
+      put 'perform', on: :member
+    end
     resources :wastes, only: [:create, :destroy, :update] do
       get 'index', on: :collection
       delete 'revert', on: :member

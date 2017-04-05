@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404101944) do
+ActiveRecord::Schema.define(version: 20170405122829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,9 @@ ActiveRecord::Schema.define(version: 20170404101944) do
     t.datetime "supplyDate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float    "summ"
+    t.string   "caterer"
+    t.boolean  "performed"
   end
 
   create_table "supply_items", force: :cascade do |t|
@@ -134,6 +137,7 @@ ActiveRecord::Schema.define(version: 20170404101944) do
     t.integer  "store_item_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.float    "changePrice"
     t.index ["ingredient_id"], name: "index_supply_items_on_ingredient_id", using: :btree
     t.index ["store_item_id"], name: "index_supply_items_on_store_item_id", using: :btree
     t.index ["supply_id"], name: "index_supply_items_on_supply_id", using: :btree
