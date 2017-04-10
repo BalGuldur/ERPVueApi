@@ -1,5 +1,11 @@
-Rails.application.routes.draw do
-  api_version(module: 'V1', path: {value: 'v1'}, default: true) do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
+  api_version(module: 'V1', path: {value: 'v1'}, default: true) do # rubocop:disable Metrics/BlockLength
+    resources :orders, only: [:create, :destroy] do
+      get 'index', on: :collection
+    end
+    resources :menu_categories, only: [:create, :destroy] do
+      get 'index', on: :collection
+    end
     resources :supplies, only: [:create] do
       get 'index', on: :collection
       put 'revert', on: :member
@@ -35,6 +41,8 @@ Rails.application.routes.draw do
       get 'index', on: :collection
       put 'add_category', on: :member
       put 'remove_category', on: :member
+      put 'attach', on: :member
+      put 'de_attach', on: :member
     end
     resources :ingredients, only: [:create, :destroy, :update] do
       get 'index', on: :collection

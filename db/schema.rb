@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405122829) do
+ActiveRecord::Schema.define(version: 20170407103545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,14 @@ ActiveRecord::Schema.define(version: 20170405122829) do
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id", using: :btree
   end
 
+  create_table "menu_categories", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "parent_category_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["parent_category_id"], name: "index_menu_categories_on_parent_category_id", using: :btree
+  end
+
   create_table "store_item_counters", force: :cascade do |t|
     t.integer  "store_item_id"
     t.float    "storeNewQty"
@@ -156,8 +164,10 @@ ActiveRecord::Schema.define(version: 20170405122829) do
   create_table "tech_cards", force: :cascade do |t|
     t.string   "title"
     t.float    "price"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "menu_category_id"
+    t.index ["menu_category_id"], name: "index_tech_cards_on_menu_category_id", using: :btree
   end
 
   create_table "waste_items", force: :cascade do |t|
@@ -191,6 +201,7 @@ ActiveRecord::Schema.define(version: 20170405122829) do
   add_foreign_key "supply_items", "supplies"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"
+  add_foreign_key "tech_cards", "menu_categories"
   add_foreign_key "waste_items", "ingredients"
   add_foreign_key "waste_items", "store_items"
   add_foreign_key "waste_items", "wastes"

@@ -3,6 +3,7 @@ class TechCard < ApplicationRecord
   has_many :check_items
   has_many :tech_card_items, dependent: :destroy
   has_and_belongs_to_many :store_menu_categories
+  belongs_to :menu_category, required: false
 
   def self.front_view
     f_v = {}

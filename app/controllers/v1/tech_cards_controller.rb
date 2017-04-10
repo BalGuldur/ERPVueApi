@@ -1,5 +1,6 @@
 class V1::TechCardsController < V1::BaseController
-  before_action :set_tech_card, only: [:destroy, :update, :add_category, :remove_category]
+  before_action :set_tech_card, only: [:destroy, :update, :add_category, :remove_category, :attach, :de_attach]
+  before_action :set_menu_category, only: [:attach, :de_attach]
   before_action :set_category, only: [:add_category, :remove_category]
 
   def index
@@ -40,7 +41,7 @@ class V1::TechCardsController < V1::BaseController
     if @tech_card.destroy
       render json: @tech_card, status: :ok
     else
-      render json: @tech_card.errors, status: 404
+      render json: @tech_card.errors, status: 400
     end
   end
 
@@ -49,7 +50,7 @@ class V1::TechCardsController < V1::BaseController
     if @tech_card.save
       render json: {tech_card: @tech_card.front_view}, status: :ok
     else
-      render json: @tech_card.errors, status: 404
+      render json: @tech_card.errors, status: 400
     end
   end
 
@@ -57,7 +58,33 @@ class V1::TechCardsController < V1::BaseController
     if @tech_card.store_menu_categories.delete(@store_menu_category)
       render json: @tech_card.front_view, status: :ok
     else
-      render json: @tech_card.errors, status: 404
+      render json: @tech_card.errors, status: 400
+    end
+  end
+
+  def attach
+    @tech_card.menu_category = @menu_category
+    if @tech_card.save
+      render json: {
+        tech_cards: @tech_card.front_view_with_key,
+        menuCategories: @tech_card.menu_category.front_view_with_key
+      }, status: :ok
+    else
+      render json: @tech_card.errors, status: 400
+    end
+  end
+
+  def de_attach
+    @menu_category_id = @tech_card.menu_category
+    @tech_card.menu_category = nil
+    @menu_category = MenuCategory.find(@menu_category_id)
+    if @tech_card.save
+      render json: {
+        tech_cards: @tech_card.front_view_with_key,
+        menuCategories: @menu_category.front_view_with_key
+      }, status: :ok
+    else
+      render json: @tech_card.errors, status: 400
     end
   end
 
@@ -65,6 +92,10 @@ class V1::TechCardsController < V1::BaseController
 
   def tech_card_params
     params.permit(:price, :title)
+  end
+
+  def set_menu_category
+    @menu_category = MenuCategory.find(params[:menuCategory][:id])
   end
 
   def tech_card_items_params
@@ -76,7 +107,7 @@ class V1::TechCardsController < V1::BaseController
   end
 
   def set_category
-    puts "params #{params.as_json}"
+    # puts "params #{params.as_json}"
     @store_menu_category = StoreMenuCategory.find(params[:category][:id])
   end
 end
