@@ -1,0 +1,27 @@
+html
+  head
+  body
+    div
+      table
+        caption Поднебесная
+        tr
+          th Кол
+          th Скид
+          th Цена
+          th Сумма
+        - @check.check_items.each do |check_item|
+          tr
+            td colspan="4"
+              = check_item.techCardTitle
+          tr
+            td
+              = check_item.qty
+            td
+              = check_item.techCardPrice
+            td
+              = (check_item.discount.presence || 0).to_s + '%'
+            td
+              = check_item.summ
+    div
+      h3
+        = 'ИТОГО: ' + @check.summ.to_s

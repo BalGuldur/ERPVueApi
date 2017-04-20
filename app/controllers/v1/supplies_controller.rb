@@ -5,7 +5,7 @@ class V1::SuppliesController < V1::BaseController
     @supplies = Supply.all.front_view_with_name_key
     @supplies = {supplies: {}} if @supplies.empty?
     @supplyItems = SupplyItem.all.front_view_with_name_key
-    @supplyItems = {wasteItems: {}} if @supplyItems.empty?
+    @supplyItems = {supplyItems: {}} if @supplyItems.empty?
     result = {}.merge!(@supplies).merge!(@supplyItems)
     render json: result, status: :ok
   end

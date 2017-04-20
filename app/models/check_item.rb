@@ -1,8 +1,16 @@
 class CheckItem < ApplicationRecord
-  after_create :fix_store
+  # after_create :fix_store
 
   belongs_to :check
   belongs_to :tech_card, required: false
+
+  def self.front_view_with_name_key
+    f_v = {}
+    all.each do |check_item|
+      f_v.merge!(check_item.front_view_with_key)
+    end
+    {checkItems: f_v}
+  end
 
   def self.front_view
     f_v = {}
@@ -20,9 +28,13 @@ class CheckItem < ApplicationRecord
     as_json(methods: [:tech_card_id])
   end
 
-  private
-
   def fix_store
     tech_card.fix_store(qty: qty)
   end
+
+  private
+
+  # def fix_store
+  #   tech_card.fix_store(qty: qty)
+  # end
 end

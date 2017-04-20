@@ -1,6 +1,6 @@
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do # rubocop:disable Metrics/BlockLength
-    resources :orders, only: [:create, :destroy] do
+    resources :orders, only: [:create, :destroy, :update] do
       get 'index', on: :collection
     end
     resources :menu_categories, only: [:create, :destroy] do
@@ -21,6 +21,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
     resources :checks, only: [:create, :destroy, :update] do
       get 'index', on: :collection
+      post 'save', on: :collection
+      post 'print', on: :collection
+      put 'paid', on: :member
     end
     resources :check_items, only: [] do
       get 'index', on: :collection

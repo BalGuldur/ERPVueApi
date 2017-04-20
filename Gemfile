@@ -13,6 +13,14 @@ gem 'versionist'
 
 gem 'rack-cors', require: 'rack/cors'
 
+# Генерация PDF
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
+# Печать через CUPS
+gem 'cupsffi'
+
+gem 'slim-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.2'
