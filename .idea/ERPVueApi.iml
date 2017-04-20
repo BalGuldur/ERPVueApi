@@ -262,6 +262,7 @@
     <orderEntry type="library" scope="PROVIDED" name="execjs (v2.7.0, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faraday (v0.11.0, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.9.18, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="figaro (v1.1.1, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v0.3.7, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hashie (v3.5.5, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v0.8.1, RVM: ruby-2.3.3 [ERPVueApi]) [gem]" level="application" />

@@ -91,7 +91,7 @@ class V1::TechCardsController < V1::BaseController
   private
 
   def tech_card_params
-    params.permit(:price, :title)
+    params.permit(:price, :title, :name)
   end
 
   def set_menu_category
