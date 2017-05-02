@@ -59,7 +59,7 @@ class Check < ApplicationRecord
   def height_page
     # Генерирация высоты чека
     header_size = 20
-    footer_size = 20
+    footer_size = 40
     order_size = self.check_items.count * 20
     page_height = header_size + footer_size + order_size
     # Если высота чека меньше ширины выставляем высоту больше, для получения landscape ориентации

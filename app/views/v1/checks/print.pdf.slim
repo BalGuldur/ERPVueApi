@@ -1,24 +1,45 @@
 html
   head
   body
-    div
-      table
-        caption Поднебесная
-        tr
-          th Наименование
-          th Кол-во
-          th Сумма
-        - @check.check_items.each do |check_item|
+    center
+      div style="align: center;"
+        h2 Пентхаус Поднебесная
+        br
+        = DateTime.now.to_s(:db)
+        table border="1" style="width: 100%;"
           tr
-            td colspan="4"
-              = check_item.techCardTitle[0..15]
+            th
+              small Блюдо
+            th
+              small Кол-во
+            th
+              small Сумма
+          - @check.check_items.each do |check_item|
+            tr
+              td
+                small
+                  = check_item.techCardTitle[0..15]
+              td align="right"
+                small
+                  = check_item.qty
+              td align="right"
+                small
+                  = (check_item.techCardPrice * check_item.qty).to_i.to_s
+          tr
             td
-              = check_item.qty
+              = 'Сумма: '
+            td align="right" colspan="2"
+              = @check.summ_without_disc.to_i.to_s
+          - if @check.summ_without_disc != @check.summ
+            tr
+              td
+                = 'Скидка: '
+              td align="right" colspan="2"
+                = (@check.summ_without_disc - @check.summ).to_i.to_s
+          tr
             td
-              = check_item.techCardPrice * check_item.qty
-    div
-      h3
-        = 'Сумма: ' + @check.summ_without_disc.to_s
-        - if @check.summ_without_disc != @check.summ do
-          = 'Скидка: ' + (@check.summ_without_disc - @check.summ).to_s
-        = 'ИТОГО: ' + @check.summ.to_s
+              b
+                = 'ИТОГО: '
+            td align="right" colspan="2"
+              b
+                = @check.summ.to_i.to_s
