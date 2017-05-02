@@ -5,23 +5,20 @@ html
       table
         caption Поднебесная
         tr
-          th Кол
-          th Цена
-          th Скидк
+          th Наименование
+          th Кол-во
           th Сумма
         - @check.check_items.each do |check_item|
           tr
             td colspan="4"
-              = check_item.techCardTitle
-          tr
+              = check_item.techCardTitle[0..15]
             td
               = check_item.qty
             td
-              = check_item.techCardPrice
-            td
-              = (check_item.discount.presence || 0).to_s + '%'
-            td
-              = check_item.summ
+              = check_item.techCardPrice * check_item.qty
     div
       h3
+        = 'Сумма: ' + @check.summ_without_disc.to_s
+        - if @check.summ_without_disc != @check.summ do
+          = 'Скидка: ' + (@check.summ_without_disc - @check.summ).to_s
         = 'ИТОГО: ' + @check.summ.to_s

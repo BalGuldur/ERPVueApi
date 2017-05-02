@@ -41,6 +41,12 @@ class Check < ApplicationRecord
     as_json(methods: [:check_item_ids, :cash_box_id])
   end
 
+  def summ_without_disc
+    result = 0
+    check_items.each {|checkItem| result += checkItem.techCardPrice * checkItem.qty}
+    result
+  end
+
   def file_name
     return "#{id}-#{DateTime.now}-check.pdf"
   end
