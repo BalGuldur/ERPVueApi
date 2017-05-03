@@ -2,18 +2,18 @@ html
   head
   body
     center
-      div style="align: center;"
-        h2 Пентхаус Поднебесная
-        br
-        = DateTime.now.to_s(:db)
-        table border="1" style="width: 100%;"
+      h3 align="center" Пентхаус Поднебесная
+      table
+        tbody
           tr
-            th
+            td
               small Блюдо
-            th
+            td align="right"
               small Кол-во
-            th
+            td align="right"
               small Сумма
+          tr
+            td colspan="3" ------------------------------------------
           - @check.check_items.each do |check_item|
             tr
               td
@@ -26,20 +26,27 @@ html
                 small
                   = (check_item.techCardPrice * check_item.qty).to_i.to_s
           tr
-            td
-              = 'Сумма: '
+            td colspan="3" ------------------------------------------
+          tr
             td align="right" colspan="2"
-              = @check.summ_without_disc.to_i.to_s
+              small Сумма:
+            td align="right"
+              small
+                = @check.summ_without_disc.to_i.to_s
           - if @check.summ_without_disc != @check.summ
             tr
-              td
-                = 'Скидка: '
               td align="right" colspan="2"
-                = (@check.summ_without_disc - @check.summ).to_i.to_s
+                small Скидка:
+              td align="right"
+                small
+                  = (@check.summ_without_disc - @check.summ).to_i.to_s
           tr
-            td
-              b
-                = 'ИТОГО: '
             td align="right" colspan="2"
-              b
-                = @check.summ.to_i.to_s
+              b ИТОГО:
+            td align="right"
+              = @check.summ.to_i.to_s
+          tr
+            td colspan="3" ------------------------------------------
+          tr
+            td align="center" colspan="3"
+              small Вознаграждение официанту приветствуется но всегда остается на Ваше усмотрение
