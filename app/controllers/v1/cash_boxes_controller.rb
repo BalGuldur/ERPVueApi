@@ -32,10 +32,22 @@ class V1::CashBoxesController < V1::BaseController
     end
   end
 
+  def change_cash
+    if @cash_box.change_cash change_cash_params[:cash]
+      render json: @cash_box, status: :ok
+    else
+      render josn: @cash_box.errors, status: 404
+    end
+  end
+
   private
 
   def cash_box_params
-    params.permit(:title, :discount)
+    params.permit(:title, :discount, :encashPercent)
+  end
+
+  def change_cash_params
+    params.permit(:cash)
   end
 
   def set_cash_box

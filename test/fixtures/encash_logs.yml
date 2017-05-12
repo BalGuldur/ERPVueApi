@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  oldCash: 1.5
+  newCash: 1.5
+  encashPercent: 1.5
+  encashPaid: 1.5
+  cash_box: one
+
+two:
+  oldCash: 1.5
+  newCash: 1.5
+  encashPercent: 1.5
+  encashPaid: 1.5
+  cash_box: two

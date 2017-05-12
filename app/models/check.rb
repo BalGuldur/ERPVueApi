@@ -26,6 +26,7 @@ class Check < ApplicationRecord
       check_items.each &:fix_store
       self.paidOn = DateTime.now
       save!
+      cash_box.change_cash summ
     end
   end
 

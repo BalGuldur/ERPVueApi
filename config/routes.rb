@@ -1,5 +1,8 @@
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do # rubocop:disable Metrics/BlockLength
+    resources :encash, only: [:create] do
+      get 'index', on: :collection
+    end
     resources :orders, only: [:create, :destroy, :update] do
       get 'index', on: :collection
     end
