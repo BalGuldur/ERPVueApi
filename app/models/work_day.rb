@@ -5,10 +5,13 @@ class WorkDay < ApplicationRecord
     @work_day = WorkDay.where(closeOn: nil).last
     if (@work_day.present? and !@work_day.shift_is_open)
       @work_day.close
-      return @work_day
-    else
-      return @work_day
     end
+    @work_day
+  end
+
+  def self.active
+    @work_day = WorkDay.where(closeOn: nil).last
+    @work_day
   end
 
   def shift_is_open
@@ -20,5 +23,34 @@ class WorkDay < ApplicationRecord
       self.closeOn = DateTime.now
       save!
     end
+  end
+
+  # Стандартный набор для генерации front_view
+  def self.front_view_with_name_key
+    f_v = {}
+    all.each do |work_day|
+      f_v.merge!(work_day.front_view_with_key)
+    end
+    {work_days: f_v}
+  end
+
+  def self.front_view
+    f_v = {}
+    all.each do |work_day|
+      f_v.merge!(work_day.front_view_with_key)
+    end
+    f_v
+  end
+
+  def front_view_with_name_key
+    {work_days: front_view_with_key}
+  end
+
+  def front_view_with_key
+    {id => front_view}
+  end
+
+  def front_view
+    as_json(methods: [:shift_ids])
   end
 end
