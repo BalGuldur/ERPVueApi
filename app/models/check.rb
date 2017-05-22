@@ -28,6 +28,16 @@ class Check < ApplicationRecord
       self.paidOn = DateTime.now
       save!
       cash_box.change_cash summ
+      # Выбираем открытый рабочий день или создаем новый
+      @work_day = WorkDay.where(closeOn: nil).last
+      @work_day = WorkDay.new(openOn: DateTime.now) if !@work_day.present?
+      # Выбираем открыую смену или создаем новую
+      @shift = @work_day.shifts.where(closeOn: nil).last
+      @shift = Shift.new(work_day: @work_day, openOn: DateTime.now) if !@shift.present?
+      @work_day.save!
+      @shift.save!
+      self.shift = @shift
+      check_items.each &:fix_cat_analitic
     end
   end
 

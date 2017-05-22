@@ -12,6 +12,11 @@ class CashBox < ApplicationRecord
     self.save!
   end
 
+  def encash amount
+    @amount = 0 - (amount || 0)
+    self.change_cash @amount
+  end
+
   def self.front_view
     f_v = {}
     all.each do |ing|
