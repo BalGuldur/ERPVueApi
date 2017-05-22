@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: MyString
+  openOn: 2017-05-22 11:49:10
+  closeOn: 2017-05-22 11:49:10
+  work_day: one
+
+two:
+  employee: MyString
+  openOn: 2017-05-22 11:49:10
+  closeOn: 2017-05-22 11:49:10
+  work_day: two

@@ -1,5 +1,6 @@
 class CashBox < ApplicationRecord
   has_many :cash_box_logs, dependent: :destroy
+  has_many :cash_box_analitics
 
   def change_cash amountChange
     oldCash = self.cash

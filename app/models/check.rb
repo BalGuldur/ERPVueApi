@@ -2,6 +2,7 @@ class Check < ApplicationRecord
   has_many :check_items, dependent: :destroy
   belongs_to :cash_box
   belongs_to :order
+  belongs_to :shift, required: false
 
   serialize :print_job_ids
 
