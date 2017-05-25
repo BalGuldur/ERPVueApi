@@ -5,7 +5,7 @@ html
       h3 align="center" Пентхаус Поднебесная
       text align="center"
         . Дата
-        = @shift.closedOn
+        = @shift.closeOn
       table
         tbody
           tr
@@ -17,24 +17,24 @@ html
               small Расхождение
           tr
             td colspan="3" -----------------------------------------
-          - @shift.cashBoxes.each do |key, cashBox|
+          - @cash_box_ans do |cash_box_an|
             tr
               td
                 small
-                  = cashBox['title']
+                  = cash_box_an.title
               td
                 small
-                  = cashBox['realCash']
+                  = cash_box_an.realCash
               td
                 small
-                  = cashBox['diffCash']
+                  = cash_box_an.realCash - cash_box_an.cash
           tr
             td colspan="3" -----------------------------------------
           tr
             td colspan="2"
               small Сумма закупки
             td colspan="1"
-              = @shift.summPurchase
+              . summPurchase
           tr
             td colspan="3" -----------------------------------------
           tr
@@ -47,17 +47,3 @@ html
               small Сумма
             td
               small Кол-во заказов
-          - @store_menu_categories.each do |st_men_cat|
-            = if @shift.analitics[st_men_cat.id].present?
-              tr
-                td
-                  small
-                    = @shift.analitics[st_men_cat.id]['title']
-              tr
-                td
-                  small null
-              tr
-                td
-                  small
-                    = @shift.analitics[st_men_cat.id]['qty']
-

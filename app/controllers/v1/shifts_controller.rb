@@ -32,7 +32,21 @@ class V1::ShiftsController < V1::BaseController
   end
 
   def print
-  #   TODO: написать контроллер для печати
+    # Генерируем имя файла (нужно сделать отдельно, т.к. вызывается в двух местах)
+    file_name = @shift.file_name
+    @store_menu_categories = StoreMenuCategory.where(title: ['Кухня', 'Бар', 'Кальян'])
+    @st_men_cat_ans = @shift.store_menu_cat_analitics.includes(:store_menu_category).where(store_menu_categories: {title: ['Кухня', 'Бар', 'Кальян']})
+    @cash_box_ans = @shift.cash_box_analitics
+    # @cash_box_analitics = @shift
+    # Генерируем файл с чеком
+    render :pdf => 'print_change_cash_box',
+           margin: {top: 8, bottom: 8, left: 8, right: 8},
+           page_height: 120,
+           page_width: 80,
+           encoding: 'utf8',
+           save_only: true,
+           save_to_file: Rails.root.join('public/shifts', file_name)
+    render json: '', status: :ok
   end
 
   private
