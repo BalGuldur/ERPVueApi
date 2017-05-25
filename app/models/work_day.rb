@@ -31,7 +31,7 @@ class WorkDay < ApplicationRecord
     all.each do |work_day|
       f_v.merge!(work_day.front_view_with_key)
     end
-    {work_days: f_v}
+    {workDays: f_v}
   end
 
   def self.front_view
@@ -43,7 +43,7 @@ class WorkDay < ApplicationRecord
   end
 
   def front_view_with_name_key
-    {work_days: front_view_with_key}
+    {workDays: front_view_with_key}
   end
 
   def front_view_with_key
