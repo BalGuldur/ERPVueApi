@@ -64,4 +64,43 @@ class Shift < ApplicationRecord
   def front_view
     as_json(methods: [:store_menu_cat_analitic_ids, :cash_box_analitic_ids])
   end
+
+  def file_name
+    return "#{id}-#{DateTime.now}-shift.pdf"
+  end
+
+  def printer
+    CupsPrinter.new(CupsPrinter.get_all_printer_names.first)
+  end
+
+  # Высота бумаги распечатаемого чека (используется в контроллере checks print)
+  def height_page
+    # Генерирация высоты чека
+    # header_size = 20
+    # footer_size = 40
+    # order_size = self.check_items.count * 20
+    # page_height = header_size + footer_size + order_size
+    page_height = 150
+    # Если высота чека меньше ширины выставляем высоту больше, для получения landscape ориентации
+    page_height = 82 if page_height < 82
+    return page_height
+  end
+
+  # Печать чека
+  def print file_name
+    job = printer.print_file 'public/checks/' + file_name
+    # Для избежания ошибки операции << на nil объекте
+    self.print_job_ids = [] if self.print_job_ids.nil?
+    self.print_job_ids << job.id
+    update printed: true
+    save
+  end
+
+  def cancel_print
+    if print_job_ids.present?
+      print_job_ids.each do |job_id|
+        CupsJob.new(job_id, printer).cancel
+      end
+    end
+  end
 end

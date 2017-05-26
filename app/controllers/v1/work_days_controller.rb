@@ -11,7 +11,7 @@ class V1::WorkDaysController < V1::BaseController
     if @work_day.present?
       render json: @work_day.front_view_with_name_key, status: :ok
     else
-      render json: @work_day, status: 400
+      render json: {workDays: nil}, status: :ok
     end
   end
 

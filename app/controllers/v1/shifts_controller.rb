@@ -1,5 +1,5 @@
 class V1::ShiftsController < V1::BaseController
-  before_action :set_shift, only: [:close]
+  before_action :set_shift, only: [:close, :print]
 
   def index_active
     @work_day = WorkDay.active
@@ -34,14 +34,16 @@ class V1::ShiftsController < V1::BaseController
   def print
     # Генерируем имя файла (нужно сделать отдельно, т.к. вызывается в двух местах)
     file_name = @shift.file_name
-    @store_menu_categories = StoreMenuCategory.where(title: ['Кухня', 'Бар', 'Кальян'])
-    @st_men_cat_ans = @shift.store_menu_cat_analitics.includes(:store_menu_category).where(store_menu_categories: {title: ['Кухня', 'Бар', 'Кальян']})
+    @filter_cat = ['Кухня', 'Бар', 'Кальян']
+    @st_men_cat_ans = @shift.store_menu_cat_analitics.includes(:store_menu_category).where(store_menu_categories: {title: @filter_cat})
+    @qty = @st_men_cat_ans.group(:title).sum(:qty)
+    @summ = @st_men_cat_ans.group(:title).sum(:summ)
     @cash_box_ans = @shift.cash_box_analitics
     # @cash_box_analitics = @shift
     # Генерируем файл с чеком
     render :pdf => 'print_change_cash_box',
            margin: {top: 8, bottom: 8, left: 8, right: 8},
-           page_height: 120,
+           page_height: @shift.height_page,
            page_width: 80,
            encoding: 'utf8',
            save_only: true,

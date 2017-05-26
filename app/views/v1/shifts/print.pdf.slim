@@ -4,7 +4,10 @@ html
     center
       h3 align="center" Пентхаус Поднебесная
       text align="center"
-        . Дата
+        . Смена открыта
+        = @shift.openOn
+      text align="center"
+        . Смена закрыта
         = @shift.closeOn
       table
         tbody
@@ -12,16 +15,21 @@ html
             td
               small Касса
             td
-              small Инкассировано
+              small По сист.
+            td
+              small Введено
             td
               small Расхождение
           tr
-            td colspan="3" -----------------------------------------
-          - @cash_box_ans do |cash_box_an|
+            td colspan="4" -----------------------------------------
+          - @cash_box_ans.each do |cash_box_an|
             tr
               td
                 small
-                  = cash_box_an.title
+                  = cash_box_an.cashBoxSave['title']
+              td
+                small
+                  = cash_box_an.cash
               td
                 small
                   = cash_box_an.realCash
@@ -29,21 +37,33 @@ html
                 small
                   = cash_box_an.realCash - cash_box_an.cash
           tr
-            td colspan="3" -----------------------------------------
+            td colspan="4" -----------------------------------------
           tr
             td colspan="2"
               small Сумма закупки
-            td colspan="1"
+            td colspan="2"
               . summPurchase
           tr
-            td colspan="3" -----------------------------------------
+            td colspan="4" -----------------------------------------
           tr
-            td colspan="3"
+            td colspan="4"
               small Аналитика
           tr
             td
               small Раздел
-            td
+            td colspan="2"
               small Сумма
             td
               small Кол-во заказов
+          - @filter_cat.each do |cat_title|
+            tr
+              td
+                small
+                  = cat_title
+              td colspan="2"
+                small
+                  = @summ[cat_title] || 0
+              td
+                small
+                  = @qty[cat_title] || 0
+
