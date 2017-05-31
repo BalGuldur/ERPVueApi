@@ -4,60 +4,63 @@ html
     center
       h3 align="center" Пентхаус Поднебесная
       text align="center"
-        . Дата
-        = @shift.closedOn
+        . День открыт
+        = @work_day.openOn
+      text align="center"
+        . День закрыт
+        = @work_day.closeOn
       table
         tbody
           tr
             td
               small Касса
             td
-              small Инкассировано
+              small Сист.
             td
-              small Расхождение
+              small Введено
+            td
+              small Закуп
+            td
+              small Расхож
           tr
-            td colspan="3" -----------------------------------------
-          - @shift.cashBoxes.each do |key, cashBox|
+            td colspan="5" -----------------------------------------
+          - @cash_boxes.each do |cash_box_title|
             tr
               td
                 small
-                  = cashBox['title']
+                  = cash_box_title
               td
                 small
-                  = cashBox['realCash']
+                  = @cash[cash_box_title]
               td
                 small
-                  = cashBox['diffCash']
+                  = @realCash[cash_box_title]
+              td
+                small
+                  = @purchaseSumm[cash_box_title]
+              td
+                small
+                  = @realCash[cash_box_title] - @cash[cash_box_title] + @purchaseSumm[cash_box_title]
           tr
-            td colspan="3" -----------------------------------------
+            td colspan="5" -----------------------------------------
           tr
-            td colspan="2"
-              small Сумма закупки
-            td colspan="1"
-              = @shift.summPurchase
-          tr
-            td colspan="3" -----------------------------------------
-          tr
-            td colspan="3"
+            td colspan="5"
               small Аналитика
           tr
             td
               small Раздел
-            td
+            td colspan="3"
               small Сумма
             td
               small Кол-во заказов
-          - @store_menu_categories.each do |st_men_cat|
-            = if @shift.analitics[st_men_cat.id].present?
-              tr
-                td
-                  small
-                    = @shift.analitics[st_men_cat.id]['title']
-              tr
-                td
-                  small null
-              tr
-                td
-                  small
-                    = @shift.analitics[st_men_cat.id]['qty']
-
+          - @filter_cat.each do |cat_title|
+            tr
+              td
+                small
+                  = cat_title
+              td colspan="3"
+                small
+                  = @summ[cat_title] || 0
+              td
+                small
+                  = @qty[cat_title] || 0

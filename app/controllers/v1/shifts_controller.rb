@@ -20,7 +20,8 @@ class V1::ShiftsController < V1::BaseController
   end
 
   def close
-    if @shift.close close_params[:employee], close_params[:cashBoxes]
+    if @shift.close close_params[:employee],
+                    close_params[:cashBoxes]
       @shifts = Shift.where(id: @shift.id)
       result = @shifts.front_view_with_name_key
       result.merge! CashBoxAnalitic.where(shift: @shifts).front_view_with_name_key
@@ -38,7 +39,7 @@ class V1::ShiftsController < V1::BaseController
     @st_men_cat_ans = @shift.store_menu_cat_analitics.includes(:store_menu_category).where(store_menu_categories: {title: @filter_cat})
     @qty = @st_men_cat_ans.group(:title).sum(:qty)
     @summ = @st_men_cat_ans.group(:title).sum(:summ)
-    @cash_box_ans = @shift.cash_box_analitics
+    @cash_box_ans = @shift.cash_box_analitics.order(:cash_box_id)
     # @cash_box_analitics = @shift
     # Генерируем файл с чеком
     render :pdf => 'print_change_cash_box',
@@ -48,7 +49,9 @@ class V1::ShiftsController < V1::BaseController
            encoding: 'utf8',
            save_only: true,
            save_to_file: Rails.root.join('public/shifts', file_name)
-    render json: '', status: :ok
+    # Печатаем сгенерированный файл
+    @shift.print(file_name)
+    # render json: '', status: :ok
   end
 
   private

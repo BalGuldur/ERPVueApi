@@ -88,11 +88,11 @@ class Shift < ApplicationRecord
 
   # Печать чека
   def print file_name
-    job = printer.print_file 'public/checks/' + file_name
+    job = printer.print_file 'public/shifts/' + file_name
     # Для избежания ошибки операции << на nil объекте
-    self.print_job_ids = [] if self.print_job_ids.nil?
-    self.print_job_ids << job.id
-    update printed: true
+    # self.print_job_ids = [] if self.print_job_ids.nil?
+    # self.print_job_ids << job.id
+    # update printed: true
     save
   end
 
