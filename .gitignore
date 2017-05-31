@@ -8,6 +8,8 @@
 /config/database.yml
 /config/secrets.yml
 /public/checks/*.pdf
+/public/shifts/*.pdf
+/public/workDays/*.pdf
 
 # Ignore bundler config.
 /.bundle
