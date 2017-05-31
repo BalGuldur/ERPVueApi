@@ -2,6 +2,7 @@ class Check < ApplicationRecord
   has_many :check_items, dependent: :destroy
   belongs_to :cash_box
   belongs_to :order
+  belongs_to :shift, required: false
 
   serialize :print_job_ids
 
@@ -26,6 +27,17 @@ class Check < ApplicationRecord
       check_items.each &:fix_store
       self.paidOn = DateTime.now
       save!
+      cash_box.change_cash summ
+      # Выбираем открытый рабочий день или создаем новый
+      @work_day = WorkDay.where(closeOn: nil).last
+      @work_day = WorkDay.new(openOn: DateTime.now) if !@work_day.present?
+      # Выбираем открыую смену или создаем новую
+      @shift = @work_day.shifts.where(closeOn: nil).last
+      @shift = Shift.new(work_day: @work_day, openOn: DateTime.now) if !@shift.present?
+      @work_day.save!
+      @shift.save!
+      self.shift = @shift
+      check_items.each &:fix_cat_analitic
     end
   end
 

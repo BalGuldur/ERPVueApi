@@ -10,16 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170420140302) do
+ActiveRecord::Schema.define(version: 20170522085851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "cash_box_analitics", force: :cascade do |t|
+    t.integer  "shift_id"
+    t.integer  "cash_box_id"
+    t.text     "cashBoxSave"
+    t.float    "realCash"
+    t.float    "cash"
+    t.float    "purchaseSumm"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["cash_box_id"], name: "index_cash_box_analitics_on_cash_box_id", using: :btree
+    t.index ["shift_id"], name: "index_cash_box_analitics_on_shift_id", using: :btree
+  end
+
+  create_table "cash_box_logs", force: :cascade do |t|
+    t.integer  "cash_box_id"
+    t.float    "oldCash"
+    t.float    "newCash"
+    t.float    "diff"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["cash_box_id"], name: "index_cash_box_logs_on_cash_box_id", using: :btree
+  end
+
   create_table "cash_boxes", force: :cascade do |t|
     t.string   "title"
     t.integer  "discount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.float    "cash"
+    t.float    "encashPercent"
   end
 
   create_table "check_items", force: :cascade do |t|
@@ -54,8 +79,27 @@ ActiveRecord::Schema.define(version: 20170420140302) do
     t.string   "cashBoxTitle"
     t.boolean  "printed"
     t.text     "print_job_ids"
+    t.integer  "shift_id"
     t.index ["cash_box_id"], name: "index_checks_on_cash_box_id", using: :btree
     t.index ["order_id"], name: "index_checks_on_order_id", using: :btree
+    t.index ["shift_id"], name: "index_checks_on_shift_id", using: :btree
+  end
+
+  create_table "encash_logs", force: :cascade do |t|
+    t.float    "oldCash"
+    t.float    "newCash"
+    t.float    "encashPercent"
+    t.float    "encashPaid"
+    t.integer  "cash_box_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["cash_box_id"], name: "index_encash_logs_on_cash_box_id", using: :btree
+  end
+
+  create_table "encashes", force: :cascade do |t|
+    t.float    "cash"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -124,6 +168,16 @@ ActiveRecord::Schema.define(version: 20170420140302) do
     t.string   "client"
   end
 
+  create_table "shifts", force: :cascade do |t|
+    t.string   "employee"
+    t.datetime "openOn"
+    t.datetime "closeOn"
+    t.integer  "work_day_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["work_day_id"], name: "index_shifts_on_work_day_id", using: :btree
+  end
+
   create_table "store_item_counters", force: :cascade do |t|
     t.integer  "store_item_id"
     t.float    "storeNewQty"
@@ -142,6 +196,18 @@ ActiveRecord::Schema.define(version: 20170420140302) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["ingredient_id"], name: "index_store_items_on_ingredient_id", using: :btree
+  end
+
+  create_table "store_menu_cat_analitics", force: :cascade do |t|
+    t.integer  "shift_id"
+    t.integer  "store_menu_category_id"
+    t.integer  "qty"
+    t.float    "summ"
+    t.text     "storeMenuCategorySave"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["shift_id"], name: "index_store_menu_cat_analitics_on_shift_id", using: :btree
+    t.index ["store_menu_category_id"], name: "index_store_menu_cat_analitics_on_store_menu_category_id", using: :btree
   end
 
   create_table "store_menu_categories", force: :cascade do |t|
@@ -223,16 +289,31 @@ ActiveRecord::Schema.define(version: 20170420140302) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "work_days", force: :cascade do |t|
+    t.datetime "openOn"
+    t.datetime "closeOn"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "cash_box_analitics", "cash_boxes"
+  add_foreign_key "cash_box_analitics", "shifts"
+  add_foreign_key "cash_box_logs", "cash_boxes"
   add_foreign_key "check_items", "checks"
   add_foreign_key "check_items", "tech_cards"
   add_foreign_key "checks", "cash_boxes"
   add_foreign_key "checks", "orders"
+  add_foreign_key "checks", "shifts"
+  add_foreign_key "encash_logs", "cash_boxes"
   add_foreign_key "inventory_items", "ingredients"
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "tech_cards"
+  add_foreign_key "shifts", "work_days"
   add_foreign_key "store_item_counters", "store_items"
   add_foreign_key "store_items", "ingredients"
+  add_foreign_key "store_menu_cat_analitics", "shifts"
+  add_foreign_key "store_menu_cat_analitics", "store_menu_categories"
   add_foreign_key "supply_items", "supplies"
   add_foreign_key "tech_card_items", "ingredients"
   add_foreign_key "tech_card_items", "tech_cards"

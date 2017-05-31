@@ -1,5 +1,21 @@
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do # rubocop:disable Metrics/BlockLength
+    resources :work_days, only: [] do
+      get 'index', on: :collection
+      get 'index_active', on: :collection
+      get 'shifts', on: :member
+      put 'close', on: :collection
+      get 'print', on: :member
+    end
+    resources :shifts, only: [] do
+      get 'index', on: :collection
+      get 'index_active', on: :collection
+      put 'close', on: :member
+      get 'print', on: :member
+    end
+    resources :encash, only: [:create] do
+      get 'index', on: :collection
+    end
     resources :orders, only: [:create, :destroy, :update] do
       get 'index', on: :collection
     end

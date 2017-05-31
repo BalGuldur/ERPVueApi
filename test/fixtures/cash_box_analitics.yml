@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shift: one
+  cash_box: one
+  cashBoxSave: MyText
+  realCash: 1.5
+  cash: 1.5
+  purchaseSumm: 1.5
+
+two:
+  shift: two
+  cash_box: two
+  cashBoxSave: MyText
+  realCash: 1.5
+  cash: 1.5
+  purchaseSumm: 1.5

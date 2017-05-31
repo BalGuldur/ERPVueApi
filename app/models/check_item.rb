@@ -32,6 +32,19 @@ class CheckItem < ApplicationRecord
     tech_card.fix_store(qty: qty)
   end
 
+  def fix_cat_analitic
+    tech_card.store_menu_categories.each do |stMenCat|
+      @store_menu_analitic = StoreMenuCatAnalitic.new(
+        shift: check.shift,
+        store_menu_category: stMenCat,
+        qty: qty,
+        summ: summ,
+        storeMenuCategorySave: stMenCat.as_json
+      )
+      @store_menu_analitic.save!
+    end
+  end
+
   private
 
   # def fix_store
