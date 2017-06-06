@@ -4,7 +4,7 @@ class TechCardItem < ApplicationRecord
 
   def self.front_view
     f_v = {}
-    all.each do |ing|
+    all.find_each do |ing|
       f_v.merge!(ing.front_view_with_key)
     end
     f_v

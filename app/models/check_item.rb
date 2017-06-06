@@ -6,7 +6,7 @@ class CheckItem < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |check_item|
+    all.find_each do |check_item|
       f_v.merge!(check_item.front_view_with_key)
     end
     {checkItems: f_v}
@@ -14,7 +14,7 @@ class CheckItem < ApplicationRecord
 
   def self.front_view
     f_v = {}
-    all.each do |ing|
+    all.find_each do |ing|
       f_v.merge!(ing.front_view_with_key)
     end
     f_v
