@@ -5,7 +5,7 @@ class OrderItem < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |order_item|
+    all.find_each do |order_item|
       f_v.merge!(order_item.front_view_with_key)
     end
     {orderItems: f_v}
