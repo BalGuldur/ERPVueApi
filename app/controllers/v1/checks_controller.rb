@@ -9,7 +9,7 @@ class V1::ChecksController < V1::BaseController
   # end
   def index
     @checks = Check.where(paidOn: nil).front_view_with_name_key
-    @checkItems = CheckItem.all.front_view_with_name_key
+    @checkItems = CheckItem.joins(:check).where(checks: {paidOn: nil}).front_view_with_name_key
     result = {}.merge!(@checks).merge!(@checkItems)
     render json: result, status: :ok
   end
