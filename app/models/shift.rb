@@ -39,7 +39,7 @@ class Shift < ApplicationRecord
   # Стандартный набор для генерации front_view
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |shift|
+    all.includes(:store_menu_cat_analitics, :cash_box_analitics).find_each do |shift|
       f_v.merge!(shift.front_view_with_key)
     end
     {shifts: f_v}

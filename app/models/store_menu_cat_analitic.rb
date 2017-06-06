@@ -7,7 +7,7 @@ class StoreMenuCatAnalitic < ApplicationRecord
   # Стандартный набор для генерации front_view
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |store_menu_cat_analitic|
+    all.find_each do |store_menu_cat_analitic|
       f_v.merge!(store_menu_cat_analitic.front_view_with_key)
     end
     {storeMenuCatAnalitics: f_v}

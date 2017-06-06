@@ -7,7 +7,7 @@ class SupplyItem < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |supply_item|
+    all.includes(:supply, :ingredient, :store_item).find_each do |supply_item|
       f_v.merge!(supply_item.front_view_with_key)
     end
     {supplyItems: f_v}

@@ -38,7 +38,7 @@ class WorkDay < ApplicationRecord
 
   def self.front_view
     f_v = {}
-    all.each do |work_day|
+    all.includes(:shifts).find_each do |work_day|
       f_v.merge!(work_day.front_view_with_key)
     end
     f_v

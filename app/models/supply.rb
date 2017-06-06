@@ -31,7 +31,7 @@ class Supply < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |supply|
+    all.find_each do |supply|
       f_v.merge!(supply.front_view_with_key)
     end
     {supplies: f_v}
@@ -39,7 +39,7 @@ class Supply < ApplicationRecord
 
   def self.front_view
     f_v = {}
-    all.each do |supply|
+    all.find_each do |supply|
       f_v.merge!(supply.front_view_with_key)
     end
     f_v

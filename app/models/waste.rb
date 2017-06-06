@@ -4,7 +4,7 @@ class Waste < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.each do |waste|
+    all.includes(:waste_items).find_each do |waste|
       f_v.merge!(waste.front_view_with_key)
     end
     {wastes: f_v}
