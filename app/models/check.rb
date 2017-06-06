@@ -8,7 +8,7 @@ class Check < ApplicationRecord
 
   def self.front_view_with_name_key
     f_v = {}
-    all.find_each do |check|
+    all.includes(:check_items, :cash_box).find_each do |check|
       f_v.merge!(check.front_view_with_key)
     end
     {checks: f_v}
