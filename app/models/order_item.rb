@@ -1,6 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :tech_card, required: false
   belongs_to :order
+  has_one :checks, through: :order
   before_save :set_tech_fields
 
   def self.front_view_with_name_key

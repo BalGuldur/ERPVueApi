@@ -4,7 +4,7 @@ class V1::OrdersController < V1::BaseController
   def index
     @orders = Order.not_paid.front_view_with_name_key
     @orders = {orders: {}} if @orders.empty?
-    @orderItems = OrderItem.all.front_view_with_name_key
+    @orderItems = OrderItem.joins(:checks).where(checks: {paidOn: nil}).front_view_with_name_key
     @orderItems = {orderItems: {}} if @orderItems.empty?
     result = {}.merge!(@orders).merge!(@orderItems)
     render json: result, status: :ok
