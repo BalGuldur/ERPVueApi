@@ -27,7 +27,7 @@ class TechCardItem < ApplicationRecord
   def fix_store(count: 1)
     @store_item = ingredient.store_item
     if @store_item.present?
-      @store_item.remains = @store_item.remains - (qty * count)
+      @store_item.remains = (@store_item.remains || 0) - (qty * count)
       @store_item.save
     end
   end
