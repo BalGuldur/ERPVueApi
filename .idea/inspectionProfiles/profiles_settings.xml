@@ -3,12 +3,14 @@
     <info color="1821be">
       <option name="BACKGROUND" value="1821be" />
       <option name="FONT_TYPE" value="1" />
+      <option name="EFFECT_COLOR" value="1821be" />
       <option name="ERROR_STRIPE_COLOR" value="1821be" />
+      <option name="EFFECT_TYPE" value="2" />
       <option name="myName" value="RuboCop" />
       <option name="myVal" value="50" />
       <option name="myExternalName" value="RuboCop" />
       <option name="myDefaultAttributes">
-        <option name="ERROR_STRIPE_COLOR" value="5962be" />
+        <option name="ERROR_STRIPE_COLOR" value="1821be" />
       </option>
     </info>
     <list size="8">
