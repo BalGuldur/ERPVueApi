@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170522085851) do
+ActiveRecord::Schema.define(version: 20170809102513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,14 @@ ActiveRecord::Schema.define(version: 20170522085851) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "halls", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_halls_on_deleted_at", using: :btree
+  end
+
   create_table "ingredients", force: :cascade do |t|
     t.string   "title"
     t.string   "measure"
@@ -166,6 +174,17 @@ ActiveRecord::Schema.define(version: 20170522085851) do
     t.string   "placeTitle"
     t.float    "summ"
     t.string   "client"
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "capacity"
+    t.datetime "deleted_at"
+    t.integer  "hall_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_places_on_deleted_at", using: :btree
+    t.index ["hall_id"], name: "index_places_on_hall_id", using: :btree
   end
 
   create_table "shifts", force: :cascade do |t|
@@ -309,6 +328,7 @@ ActiveRecord::Schema.define(version: 20170522085851) do
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "tech_cards"
+  add_foreign_key "places", "halls"
   add_foreign_key "shifts", "work_days"
   add_foreign_key "store_item_counters", "store_items"
   add_foreign_key "store_items", "ingredients"
