@@ -4,6 +4,7 @@ class Place < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :hall
+  belongs_to :open_place, required: false
 
   # Стандартный вывод для front_view
   def self.front_view

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809102513) do
+ActiveRecord::Schema.define(version: 20170831112216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,6 +155,18 @@ ActiveRecord::Schema.define(version: 20170809102513) do
     t.index ["parent_category_id"], name: "index_menu_categories_on_parent_category_id", using: :btree
   end
 
+  create_table "open_places", force: :cascade do |t|
+    t.integer  "countGuests"
+    t.string   "name"
+    t.string   "phone"
+    t.datetime "openTime"
+    t.datetime "closeTime"
+    t.datetime "deleted_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["deleted_at"], name: "index_open_places_on_deleted_at", using: :btree
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer  "qty"
     t.integer  "tech_card_id"
@@ -181,10 +193,12 @@ ActiveRecord::Schema.define(version: 20170809102513) do
     t.integer  "capacity"
     t.datetime "deleted_at"
     t.integer  "hall_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "open_place_id"
     t.index ["deleted_at"], name: "index_places_on_deleted_at", using: :btree
     t.index ["hall_id"], name: "index_places_on_hall_id", using: :btree
+    t.index ["open_place_id"], name: "index_places_on_open_place_id", using: :btree
   end
 
   create_table "shifts", force: :cascade do |t|
@@ -329,6 +343,7 @@ ActiveRecord::Schema.define(version: 20170809102513) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "tech_cards"
   add_foreign_key "places", "halls"
+  add_foreign_key "places", "open_places"
   add_foreign_key "shifts", "work_days"
   add_foreign_key "store_item_counters", "store_items"
   add_foreign_key "store_items", "ingredients"

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   api_version(module: 'V1', path: {value: 'v1'}, default: true) do # rubocop:disable Metrics/BlockLength
+    resources :open_places, only: [:index, :create] do
+      put 'close', on: :member
+    end
     resources :places, only: [:create, :update, :destroy]
     resources :halls, only: [:index, :create, :update, :destroy]
     resources :work_days, only: [] do
