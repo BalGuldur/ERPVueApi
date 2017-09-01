@@ -10,7 +10,7 @@ class V1::OpenPlacesController < V1::BaseController
   end
 
   def create
-    @open_place = OpenPlace.new(open_place_params)
+    @open_place = OpenPlace.new(open_place_params.merge!(openTime: DateTime.now))
     if @open_place.save
       render json: @open_place.front_view.merge!(@open_place.places.front_view),
              status: :ok
@@ -35,6 +35,6 @@ class V1::OpenPlacesController < V1::BaseController
   end
 
   def open_place_params
-    params.require(:open_place).permit(:name, :phone, :openTime, :countGuests, place_ids: [])
+    params.require(:open_place).permit(:name, :phone, :countGuests, place_ids: [])
   end
 end
