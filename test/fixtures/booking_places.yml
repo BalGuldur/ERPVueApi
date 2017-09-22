@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  openTime: 2017-09-01 14:45:14
+  closeTime: 2017-09-01 14:45:14
+  countGuests: 1
+  name: MyString
+  phone: MyString
+  deleted_at: 2017-09-01 14:45:14
+
+two:
+  openTime: 2017-09-01 14:45:14
+  closeTime: 2017-09-01 14:45:14
+  countGuests: 1
+  name: MyString
+  phone: MyString
+  deleted_at: 2017-09-01 14:45:14

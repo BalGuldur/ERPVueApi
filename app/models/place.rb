@@ -5,11 +5,12 @@ class Place < ApplicationRecord
 
   belongs_to :hall
   belongs_to :open_place, required: false
+  has_and_belongs_to_many :booking_places
 
   # Стандартный вывод для front_view
   def self.front_view
     f_v = {}
-    all.find_each do |place|
+    all.includes(:booking_places).find_each do |place|
       f_v.merge!(place.front_view[:places])
     end
     { places: f_v }
@@ -20,6 +21,6 @@ class Place < ApplicationRecord
   end
 
   def json_front
-    as_json
+    as_json(methods: [:booking_place_ids])
   end
 end
