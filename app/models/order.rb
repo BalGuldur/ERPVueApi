@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+  belongs_to :open_place, required: false
   has_many :order_items, dependent: :destroy
   has_many :checks, dependent: :destroy
   has_many :check_items, through: :checks
