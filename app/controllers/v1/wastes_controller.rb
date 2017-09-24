@@ -1,13 +1,18 @@
+# rubocop:disable Style/AsciiComments
+# rubocop:disable Style/ClassAndModuleChildren
+# Обработка списаний со склада
 class V1::WastesController < V1::BaseController
   before_action :set_waste, only: [:revert]
 
   def index
-    @wastes = Waste.all.front_view_with_name_key
-    @wastes = {wastes: {}} if @wastes.empty?
-    @waste_items = WasteItem.all.front_view_with_name_key
-    @waste_items = {wasteItems: {}} if @waste_items.empty?
-    result = {}.merge!(@wastes).merge!(@waste_items)
-    render json: result, status: :ok
+    @wastes = Waste.all
+    render json: @wastes.front_view, status: :ok
+    # @wastes = Waste.all.front_view_with_name_key
+    # @wastes = {wastes: {}} if @wastes.empty?
+    # @waste_items = WasteItem.all.front_view_with_name_key
+    # @waste_items = {wasteItems: {}} if @waste_items.empty?
+    # result = {}.merge!(@wastes).merge!(@waste_items)
+    # render json: result, status: :ok
   end
 
   def create
