@@ -56,14 +56,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
     resources :cash_boxes, only: [:create, :destroy, :update, :index] do
     end
-    resources :tech_card_items, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :tech_card_items, only: [:create, :destroy, :update, :index] do
     end
-    resources :store_items, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :store_items, only: [:create, :destroy, :update, :index] do
     end
-    resources :tech_cards, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :tech_cards, only: [:create, :destroy, :update, :index] do
       put 'add_category', on: :member
       put 'remove_category', on: :member
       put 'attach', on: :member

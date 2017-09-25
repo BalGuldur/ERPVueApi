@@ -1,32 +1,33 @@
 class CheckItem < ApplicationRecord
   # after_create :fix_store
+  include FrontView
 
   belongs_to :check
   belongs_to :tech_card, required: false
 
-  def self.front_view_with_name_key
-    f_v = {}
-    all.includes(:tech_card).find_each do |check_item|
-      f_v.merge!(check_item.front_view_with_key)
-    end
-    {checkItems: f_v}
-  end
-
-  def self.front_view
-    f_v = {}
-    all.find_each do |ing|
-      f_v.merge!(ing.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json(methods: [:tech_card_id])
-  end
+  # def self.front_view_with_name_key
+  #   f_v = {}
+  #   all.includes(:tech_card).find_each do |check_item|
+  #     f_v.merge!(check_item.front_view_with_key)
+  #   end
+  #   {checkItems: f_v}
+  # end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.find_each do |ing|
+  #     f_v.merge!(ing.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:tech_card_id])
+  # end
 
   def fix_store
     tech_card.fix_store(qty: qty)

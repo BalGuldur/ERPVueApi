@@ -23,7 +23,7 @@ class Ingredient < ApplicationRecord
   #   as_json(methods: [:store_item_id, :store_menu_category_ids])
   # end
   #
-  # def store_item_id
-  #   store_item.present? ? store_item.id : nil
-  # end
+  def store_item_id
+    store_item.present? ? store_item.id : nil
+  end
 end

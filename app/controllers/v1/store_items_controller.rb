@@ -2,9 +2,8 @@ class V1::StoreItemsController < V1::BaseController
   before_action :set_store_item, only: [:destroy]
 
   def index
-    @store_items = StoreItem.all.front_view
-    @store_items = {} if @store_items.empty?
-    render json: @store_items, status: :ok
+    @store_items = StoreItem.all
+    render json: @store_items.front_view(with_child: false), status: :ok
   end
 
   def create

@@ -4,9 +4,8 @@ class V1::TechCardsController < V1::BaseController
   before_action :set_category, only: [:add_category, :remove_category]
 
   def index
-    @tech_cards = TechCard.all.front_view
-    @tech_cards = {} if @tech_cards.empty?
-    render json: @tech_cards, status: :ok
+    @tech_cards = TechCard.all
+    render json: @tech_cards.front_view(with_child: false), status: :ok
   end
 
   def create
