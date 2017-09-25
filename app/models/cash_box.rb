@@ -1,4 +1,9 @@
+# rubocop:disable Style/AsciiComments
+# Класс отвечающий за
 class CashBox < ApplicationRecord
+  # Добавление стандартного FrontView
+  include FrontView
+
   has_many :cash_box_logs, dependent: :destroy
   has_many :cash_box_analitics
 
@@ -16,20 +21,20 @@ class CashBox < ApplicationRecord
     @amount = 0 - (amount || 0)
     self.change_cash @amount
   end
-
-  def self.front_view
-    f_v = {}
-    all.each do |ing|
-      f_v.merge!(ing.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json
-  end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.each do |ing|
+  #     f_v.merge!(ing.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json
+  # end
 end

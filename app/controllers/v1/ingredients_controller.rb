@@ -12,7 +12,7 @@ class V1::IngredientsController < V1::BaseController
 
   def create
     @ingredient = Ingredient.new(ingredient_params)
-    start_price.present? && @store_item = StoreItem.new(ingredient: @ingredient, remains: 0, price: start_price)
+    @store_item = StoreItem.new(ingredient: @ingredient, remains: 0, price: start_price)
     if @ingredient.save && @store_item.save
       render json: @ingredient.front_view, status: :ok
     else
@@ -48,7 +48,7 @@ class V1::IngredientsController < V1::BaseController
   private
 
   def ingredient_params
-    params.require(:ingredient).permit(:title, :measure, :store_menu_category_ids)
+    params.permit(:title, :measure, :store_menu_category_ids)
   end
 
   def start_price

@@ -54,8 +54,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
     resources :store_menu_categories, only: [:create, :destroy, :update, :index] do
     end
-    resources :cash_boxes, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :cash_boxes, only: [:create, :destroy, :update, :index] do
     end
     resources :tech_card_items, only: [:create, :destroy, :update] do
       get 'index', on: :collection

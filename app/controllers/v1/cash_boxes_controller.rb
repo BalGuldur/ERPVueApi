@@ -2,15 +2,14 @@ class V1::CashBoxesController < V1::BaseController
   before_action :set_cash_box, only: [:destroy, :update]
 
   def index
-    @cash_boxes = CashBox.all.front_view
-    @cash_boxes = {} if @cash_boxes.empty?
-    render json: @cash_boxes, status: :ok
+    @cash_boxes = CashBox.all
+    render json: @cash_boxes.front_view(with_child: false), status: :ok
   end
 
   def create
     @cash_box = CashBox.new(cash_box_params)
     if @cash_box.save
-      render json: @cash_box, status: :ok
+      render json: @cash_box.front_view, status: :ok
     else
       render json: @cash_box.errors, status: 404
     end
@@ -18,7 +17,7 @@ class V1::CashBoxesController < V1::BaseController
 
   def destroy
     if @cash_box.destroy
-      render json: @cash_box, status: :ok
+      render json: @cash_box.front_view, status: :ok
     else
       render json: @cash_box.errors, status: 404
     end
@@ -26,7 +25,7 @@ class V1::CashBoxesController < V1::BaseController
 
   def update
     if @cash_box.update(cash_box_params)
-      render json: @cash_box, status: :ok
+      render json: @cash_box.front_view, status: :ok
     else
       render json: @cash_box.errors, status: 404
     end
@@ -34,7 +33,7 @@ class V1::CashBoxesController < V1::BaseController
 
   def change_cash
     if @cash_box.change_cash change_cash_params[:cash]
-      render json: @cash_box, status: :ok
+      render json: @cash_box.front_view, status: :ok
     else
       render josn: @cash_box.errors, status: 404
     end
