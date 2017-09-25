@@ -52,8 +52,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :check_items, only: [] do
       get 'index', on: :collection
     end
-    resources :store_menu_categories, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :store_menu_categories, only: [:create, :destroy, :update, :index] do
     end
     resources :cash_boxes, only: [:create, :destroy, :update] do
       get 'index', on: :collection
@@ -71,8 +70,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       put 'attach', on: :member
       put 'de_attach', on: :member
     end
-    resources :ingredients, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :ingredients, only: [:create, :destroy, :update, :index] do
       put 'add_category', on: :member
       put 'remove_category', on: :member
     end

@@ -1,11 +1,13 @@
 class V1::IngredientsController < V1::BaseController
   before_action :set_ingredient, only: [:destroy, :add_category, :remove_category]
-  before_action :set_category, only: [:add_category, :remove_category]
+  before_action :set_category, only: [:remove_category]
+  before_action :set_or_create_category, only: [:add_category]
 
   def index
-    @ingredients = Ingredient.all.front_view
-    @ingredients = {} if @ingredients.empty?
-    render json: @ingredients, status: :ok
+    @ingredients = Ingredient.all
+    # @ingredients = {} if @ingredients.empty?
+    # render json: @ingredients, status: :ok
+    render json: @ingredients.front_view(with_child: false), status: :ok
   end
 
   def create
@@ -29,7 +31,7 @@ class V1::IngredientsController < V1::BaseController
   def add_category
     @ingredient.store_menu_categories << @store_menu_category
     if @ingredient.save
-      render json: {ingredient: @ingredient.front_view}, status: :ok
+      render json: @ingredient.front_view, status: :ok
     else
       render json: @ingredient.errors, status: 404
     end
@@ -37,7 +39,7 @@ class V1::IngredientsController < V1::BaseController
 
   def remove_category
     if @ingredient.store_menu_categories.delete(@store_menu_category)
-      render json: @ingredient, status: :ok
+      render json: @ingredient.front_view, status: :ok
     else
       render json: @ingredient.errors, status: 404
     end
@@ -46,7 +48,7 @@ class V1::IngredientsController < V1::BaseController
   private
 
   def ingredient_params
-    params.permit(:title, :measure)
+    params.require(:ingredient).permit(:title, :measure, :store_menu_category_ids)
   end
 
   def start_price
@@ -57,8 +59,11 @@ class V1::IngredientsController < V1::BaseController
     @ingredient = Ingredient.find(params[:id])
   end
 
+  def set_or_create_category
+    @store_menu_category = StoreMenuCategory.find_or_create_by(title: params[:category][:title])
+  end
+
   def set_category
-    puts "params #{params.as_json}"
     @store_menu_category = StoreMenuCategory.find(params[:category][:id])
   end
 end

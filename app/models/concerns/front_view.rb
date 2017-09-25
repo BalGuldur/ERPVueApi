@@ -8,14 +8,14 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
     @result = { id => json_front }
     return @result if collection # Если генерим для коллекции возвращаем только объект
     @result = { model_name_camelize => @result }
-    return @result if reflections_has_many.empty? # Если генерим для одиночного вида и нет reflections
+    return @result if reflect_names_collect.empty? # Если генерим для одиночного вида и нет reflections
     reflect_names_collect.each { |ref_name| @result.merge! send(ref_name).front_view(with_child: false) }
     @result
   end
 
   # объявления приватных методов класса
   included do
-    private_class_method :reflections_has_many, :model_name_camelize
+    # private_class_method :reflections_has_many, :model_name_camelize
   end
 
   # методы класса
@@ -27,21 +27,21 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
       includes(reflect_names_collect).find_each { |item| f_v.merge!(item.front_view(collection: true)) }
       f_v = { model_name_camelize => f_v }
       if with_child
-        # reflect_names_class.each do |ref_name|
-        #   @add_items = ref_name.safe_constantize
-        #                        .includes(model_name.singular)
-        #                        .where(model_name.collection => { id: [ids] })
-        #   f_v.merge!(@add_items.front_view(with_child: false))
-        # end
         add_items f_v
       end
       f_v
     end
 
     def add_items(f_v)
-      reflect_names_class.each do |ref_name|
+      ref_names_has_many_class.each do |ref_name|
         @add_items = ref_name.safe_constantize
                          .includes(model_name.singular)
+                         .where(model_name.collection => { id: [ids] })
+        f_v.merge!(@add_items.front_view(with_child: false))
+      end
+      ref_names_has_many_and_belong_class.each do |ref_name|
+        @add_items = ref_name.safe_constantize
+                         .includes(model_name.collection)
                          .where(model_name.collection => { id: [ids] })
         f_v.merge!(@add_items.front_view(with_child: false))
       end
@@ -52,16 +52,25 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
       reflect_on_all_associations(:has_many).select { |ref| !ref.through_reflection? }
     end
 
+    def reflections_has_many_and_belongs
+      reflect_on_all_associations(:has_and_belongs_to_many).select { |ref| !ref.through_reflection? }
+    end
+
     def reflect_names_collect
-      reflections_has_many.map { |ref| ref.klass.model_name.collection }
+      res = reflections_has_many.map { |ref| ref.klass.model_name.collection }
+      res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.collection }
     end
 
     def model_name_camelize
       model_name.name.pluralize.camelize(:lower)
     end
 
-    def reflect_names_class
+    def ref_names_has_many_class
       reflections_has_many.map { |ref| ref.klass.model_name.name }
+    end
+
+    def ref_names_has_many_and_belong_class
+      reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.name }
     end
   end
 
@@ -69,7 +78,7 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
   private
 
   def json_front
-    return as_json if reflections_has_many.empty?
+    return as_json if reflect_names_ids.empty?
     # @reflect_names = reflections_has_many.map { |reflection| reflection.klass.model_name.singular + '_ids' }
     as_json(methods: reflect_names_ids)
   end
@@ -83,11 +92,18 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
         .select { |ref| !ref.through_reflection? }
   end
 
+  def reflections_has_many_and_belongs
+    self.class.reflect_on_all_associations(:has_and_belongs_to_many)
+        .select { |ref| !ref.through_reflection? }
+  end
+
   def reflect_names_collect
-    reflections_has_many.map { |ref| ref.klass.model_name.collection }
+    res = reflections_has_many.map { |ref| ref.klass.model_name.collection }
+    res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.collection }
   end
 
   def reflect_names_ids
-    reflections_has_many.map { |ref| ref.klass.model_name.singular + '_ids' }
+    res = reflections_has_many.map { |ref| ref.klass.model_name.singular + '_ids' }
+    res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.singular + '_ids' }
   end
 end

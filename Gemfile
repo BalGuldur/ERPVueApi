@@ -15,7 +15,7 @@ gem 'omniauth-vkontakte'
 
 gem 'versionist'
 
-# gem 'rack-cors', require: 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 
 # Генерация PDF
 gem 'wicked_pdf'

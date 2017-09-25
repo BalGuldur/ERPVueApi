@@ -1,22 +1,23 @@
 class TechCardItem < ApplicationRecord
+  include FrontView
   belongs_to :tech_card
   belongs_to :ingredient
 
-  def self.front_view
-    f_v = {}
-    all.find_each do |ing|
-      f_v.merge!(ing.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json
-  end
+  # def self.front_view
+  #   f_v = {}
+  #   all.find_each do |ing|
+  #     f_v.merge!(ing.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json
+  # end
 
   def self.fix_store(qty: 1)
     all.each do |tech_card_item|

@@ -16,12 +16,12 @@ module ERPVueApi
 
     # Добавлено для обработки CORS запросов
     # TODO: Для production подгружать правильный список фильтров для CORS
-    # config.middleware.insert_before 0, Rack::Cors do
-    #   allow do
-    #     origins '*'
-    #     resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
-    #     # resource '/wastes', headers: :any, methods: [:get]
-    #   end
-    # end
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
+        # resource '/wastes', headers: :any, methods: [:get]
+      end
+    end
   end
 end
