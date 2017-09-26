@@ -27,8 +27,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :orders, only: [:create, :destroy, :update] do
       get 'index', on: :collection
     end
-    resources :menu_categories, only: [:create, :destroy] do
-      get 'index', on: :collection
+    resources :menu_categories, only: [:create, :destroy, :index] do
     end
     resources :supplies, only: [:create] do
       get 'index', on: :collection

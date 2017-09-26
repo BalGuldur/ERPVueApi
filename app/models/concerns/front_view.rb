@@ -49,7 +49,8 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
 
     # приватные методы класса
     def reflections_has_many
-      reflect_on_all_associations(:has_many).select { |ref| !ref.through_reflection? }
+      res = reflect_on_all_associations(:has_many).select { |ref| !ref.through_reflection? }
+      res.select { |ref| !ref.options[:class_name]}
     end
 
     def reflections_has_many_and_belongs
@@ -87,19 +88,27 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
     model_name.name.pluralize.camelize(:lower)
   end
 
-  def reflections_has_many
-    self.class.reflect_on_all_associations(:has_many)
+  def reflections_has_many(refs_to_self: false)
+    refs = self.class.reflect_on_all_associations(:has_many)
         .select { |ref| !ref.through_reflection? }
+    return refs if refs_to_self
+    refs.select { |ref| !ref.options[:class_name] }
   end
 
-  def reflections_has_many_and_belongs
-    self.class.reflect_on_all_associations(:has_and_belongs_to_many)
+  def reflections_has_many_and_belongs(refs_to_self: false)
+    refs = self.class.reflect_on_all_associations(:has_and_belongs_to_many)
         .select { |ref| !ref.through_reflection? }
+    return refs if refs_to_self
+    refs.select { |ref| !ref.options[:class_name] }
   end
 
-  def reflections_has_one
-    self.class.reflect_on_all_associations(:has_one)
+  def reflections_has_one(refs_to_self: false)
+    refs = self.class.reflect_on_all_associations(:has_one)
         .select { |ref| !ref.through_reflection? }
+    return refs unless refs_to_self
+    refs_add = self.class.reflect_on_all_associations(:belongs_to)
+        .select { |ref| ref.options[:class_name] }
+    refs + refs_add
   end
 
   def reflect_names_collect
@@ -108,8 +117,9 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
   end
 
   def reflect_names_ids
-    res = reflections_has_many.map { |ref| ref.klass.model_name.singular + '_ids' }
-    res = res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.singular + '_ids' }
-    res + reflections_has_one.map { |ref| ref.klass.model_name.singular + '_id'}
+    res = reflections_has_many(refs_to_self: true).map { |ref| ref.name.to_s.singularize + '_ids' }
+    res = res + reflections_has_many_and_belongs(refs_to_self: true).map { |ref| ref.name.to_s.singularize + '_ids' }
+    res = res + reflections_has_one(refs_to_self: true).map { |ref| ref.name.to_s.singularize + '_id'}
+    res
   end
 end

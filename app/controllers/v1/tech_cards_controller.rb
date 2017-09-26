@@ -33,7 +33,6 @@ class V1::TechCardsController < V1::BaseController
       end
     end
     @tech_card.update(tech_card_params)
-    # @tech_card.save
     render json: @tech_card.front_view
   end
 
@@ -68,10 +67,7 @@ class V1::TechCardsController < V1::BaseController
   def attach
     @tech_card.menu_category = @menu_category
     if @tech_card.save
-      render json: {
-        tech_cards: @tech_card.front_view_with_key,
-        menuCategories: @tech_card.menu_category.front_view_with_key
-      }, status: :ok
+      render json: @tech_card.menu_category.front_view, status: :ok
     else
       render json: @tech_card.errors, status: 400
     end
@@ -82,10 +78,7 @@ class V1::TechCardsController < V1::BaseController
     @tech_card.menu_category = nil
     @menu_category = MenuCategory.find(@menu_category_id)
     if @tech_card.save
-      render json: {
-        tech_cards: @tech_card.front_view_with_key,
-        menuCategories: @menu_category.front_view_with_key
-      }, status: :ok
+      render json: @menu_category.front_view.merge(@tech_card.front_view), status: :ok
     else
       render json: @tech_card.errors, status: 400
     end
