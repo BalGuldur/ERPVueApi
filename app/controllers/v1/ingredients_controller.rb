@@ -29,7 +29,9 @@ class V1::IngredientsController < V1::BaseController
   end
 
   def add_category
-    @ingredient.store_menu_categories << @store_menu_category
+    unless @ingredient.store_menu_categories.find_by(title: @store_menu_category.title).present?
+      @ingredient.store_menu_categories << @store_menu_category
+    end
     if @ingredient.save
       render json: @ingredient.front_view, status: :ok
     else
@@ -60,7 +62,8 @@ class V1::IngredientsController < V1::BaseController
   end
 
   def set_or_create_category
-    @store_menu_category = StoreMenuCategory.find_or_create_by(title: params[:category][:title])
+    @store_menu_category = StoreMenuCategory.find_by(title: params[:category][:title])
+    @store_menu_category = StoreMenuCategory.create(title: params[:category][:title]) unless @store_menu_category.present?
   end
 
   def set_category

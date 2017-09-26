@@ -75,7 +75,7 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
   end
 
   # Приватные методы инстанса
-  private
+  # private
 
   def json_front
     return as_json if reflect_names_ids.empty?
@@ -109,7 +109,7 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
 
   def reflect_names_ids
     res = reflections_has_many.map { |ref| ref.klass.model_name.singular + '_ids' }
-    res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.singular + '_ids' }
+    res = res + reflections_has_many_and_belongs.map { |ref| ref.klass.model_name.singular + '_ids' }
     res + reflections_has_one.map { |ref| ref.klass.model_name.singular + '_id'}
   end
 end
