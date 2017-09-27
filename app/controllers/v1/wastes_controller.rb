@@ -23,8 +23,8 @@ class V1::WastesController < V1::BaseController
     end
     if @waste.save
       @waste.waste_store
-      result = {}.merge!(wastes: @waste.front_view_with_key).merge!(@waste.waste_items.front_view_with_name_key)
-      render json: result, status: :ok
+      # result = {}.merge!(wastes: @waste.front_view_with_key).merge!(@waste.waste_items.front_view_with_name_key)
+      render json: @waste.front_view, status: :ok
     else
       render json: @waste.errors, status: 400
     end
@@ -32,7 +32,7 @@ class V1::WastesController < V1::BaseController
 
   def revert
     if @waste.revert
-      render json: @waste, status: :ok
+      render json: @waste.front_view, status: :ok
     else
       render json: @waste.errors, status: 400
     end

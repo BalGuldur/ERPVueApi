@@ -9,12 +9,12 @@ class V1::SuppliesController < V1::BaseController
     # result = {}.merge!(@supplies).merge!(@supplyItems)
     # render json: result, status: :ok
     # TODO: Посмотреть как упростить выгрузку front_view
-    res = @supplies.front_view
-    res.merge! Ingredient.all.front_view(with_child: false)
-    res.merge! StoreItem.all.front_view(with_child: false)
+    # res = @supplies.front_view
+    # res.merge! Ingredient.all.front_view(with_child: false)
+    # res.merge! StoreItem.all.front_view(with_child: false)
     # @supply_items = SupplyItem.includes(:supply).where(supplies: {id: @supplies.ids})
     # # res.merge!(Ingredient.includes(:supply_items).where(supply_items: {id: @supply_items.ids}).front_view)
-    render json: res, status: :ok
+    render json: @supplies.front_view, status: :ok
   end
 
   def create

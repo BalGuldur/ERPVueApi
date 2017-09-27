@@ -33,8 +33,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       put 'revert', on: :member
       put 'perform', on: :member
     end
-    resources :wastes, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :wastes, only: [:create, :destroy, :update, :index] do
       delete 'revert', on: :member
     end
     resources :inventories, only: [:create, :destroy, :update] do

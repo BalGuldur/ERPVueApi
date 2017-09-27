@@ -1,7 +1,8 @@
 class Waste < ApplicationRecord
+  include FrontView
   has_many :waste_items, dependent: :destroy
   has_many :store_items, through: :waste_items
-  include FrontView
+
   # Стандартный вывод для front_view
   # def self.front_view
   #   f_v = {}
