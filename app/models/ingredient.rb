@@ -6,6 +6,7 @@ class Ingredient < ApplicationRecord
 
   has_one :store_item, dependent: :destroy
   has_and_belongs_to_many :store_menu_categories
+  has_many :supply_items
 
   # def self.front_view
   #   f_v = {}

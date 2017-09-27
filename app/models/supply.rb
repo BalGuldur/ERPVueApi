@@ -1,4 +1,6 @@
 class Supply < ApplicationRecord
+  include FrontView
+
   has_many :supply_items, dependent: :destroy
   has_many :ingredients, through: :supply_items
   has_many :store_items, through: :ingredients
@@ -29,35 +31,35 @@ class Supply < ApplicationRecord
     end
   end
 
-  def self.front_view_with_name_key
-    f_v = {}
-    all.find_each do |supply|
-      f_v.merge!(supply.front_view_with_key)
-    end
-    {supplies: f_v}
-  end
-
-  def self.front_view
-    f_v = {}
-    all.find_each do |supply|
-      f_v.merge!(supply.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_name_key
-    {supply: front_view_with_key}
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view_with_name
-    {waste: front_view}
-  end
-
-  def front_view
-    as_json(methods: [:supply_item_ids, :ingredient_ids, :store_item_ids])
-  end
+  # def self.front_view_with_name_key
+  #   f_v = {}
+  #   all.find_each do |supply|
+  #     f_v.merge!(supply.front_view_with_key)
+  #   end
+  #   {supplies: f_v}
+  # end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.find_each do |supply|
+  #     f_v.merge!(supply.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_name_key
+  #   {supply: front_view_with_key}
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view_with_name
+  #   {waste: front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:supply_item_ids, :ingredient_ids, :store_item_ids])
+  # end
 end

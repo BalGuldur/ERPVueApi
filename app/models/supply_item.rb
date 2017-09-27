@@ -1,41 +1,43 @@
 class SupplyItem < ApplicationRecord
+  include FrontView
+
   before_create :fix_store
 
   belongs_to :supply
   belongs_to :ingredient
   has_one :store_item, through: :ingredient
 
-  def self.front_view_with_name_key
-    f_v = {}
-    all.includes(:supply, :ingredient, :store_item).find_each do |supply_item|
-      f_v.merge!(supply_item.front_view_with_key)
-    end
-    {supplyItems: f_v}
-  end
-
-  def self.front_view
-    f_v = {}
-    all.each do |supply_item|
-      f_v.merge!(supply_item.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_name_key
-    {supplyItem: front_view_with_key}
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view_with_name
-    {wasteItem: front_view}
-  end
-
-  def front_view
-    as_json(methods: [:supply_id, :ingredient_id, :store_item_id])
-  end
+  # def self.front_view_with_name_key
+  #   f_v = {}
+  #   all.includes(:supply, :ingredient, :store_item).find_each do |supply_item|
+  #     f_v.merge!(supply_item.front_view_with_key)
+  #   end
+  #   {supplyItems: f_v}
+  # end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.each do |supply_item|
+  #     f_v.merge!(supply_item.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_name_key
+  #   {supplyItem: front_view_with_key}
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view_with_name
+  #   {wasteItem: front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:supply_id, :ingredient_id, :store_item_id])
+  # end
 
   def revert
     if ingredient.present? and ingredient.store_item.present?
