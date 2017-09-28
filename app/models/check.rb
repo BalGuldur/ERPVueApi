@@ -1,4 +1,5 @@
 class Check < ApplicationRecord
+  include FrontView
   has_many :check_items, dependent: :destroy
   belongs_to :cash_box
   belongs_to :order
@@ -6,21 +7,21 @@ class Check < ApplicationRecord
 
   serialize :print_job_ids
 
-  def self.front_view_with_name_key
-    f_v = {}
-    all.includes(:check_items, :cash_box).find_each do |check|
-      f_v.merge!(check.front_view_with_key)
-    end
-    {checks: f_v}
-  end
-
-  def self.front_view
-    f_v = {}
-    all.each do |check|
-      f_v.merge!(check.front_view_with_key)
-    end
-    f_v
-  end
+  # def self.front_view_with_name_key
+  #   f_v = {}
+  #   all.includes(:check_items, :cash_box).find_each do |check|
+  #     f_v.merge!(check.front_view_with_key)
+  #   end
+  #   {checks: f_v}
+  # end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.each do |check|
+  #     f_v.merge!(check.front_view_with_key)
+  #   end
+  #   f_v
+  # end
 
   def paid
     transaction do
@@ -41,17 +42,17 @@ class Check < ApplicationRecord
     end
   end
 
-  def front_view_with_name_key
-    {checks: front_view_with_key}
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json(methods: [:check_item_ids, :cash_box_id])
-  end
+  # def front_view_with_name_key
+  #   {checks: front_view_with_key}
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:check_item_ids, :cash_box_id])
+  # end
 
   def summ_without_disc
     result = 0

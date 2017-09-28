@@ -24,8 +24,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :encash, only: [:create] do
       get 'index', on: :collection
     end
-    resources :orders, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :orders, only: [:create, :destroy, :update, :index] do
     end
     resources :menu_categories, only: [:create, :destroy, :index] do
     end
@@ -39,14 +38,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :inventories, only: [:create, :destroy, :update, :index] do
       put 'done', on: :member
     end
-    resources :checks, only: [:create, :destroy, :update] do
-      get 'index', on: :collection
+    resources :checks, only: [:create, :destroy, :update, :index] do
       post 'save', on: :collection
       post 'print', on: :collection
       put 'paid', on: :member
     end
-    resources :check_items, only: [] do
-      get 'index', on: :collection
+    resources :check_items, only: [:index] do
     end
     resources :store_menu_categories, only: [:create, :destroy, :update, :index] do
     end

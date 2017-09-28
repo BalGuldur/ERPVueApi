@@ -2,13 +2,14 @@ class V1::OrdersController < V1::BaseController
   before_action :set_order, only: [:destroy, :update]
 
   def index
-    @ords = Order.not_paid
-    @orders = @ords.front_view_with_name_key
-    @orders = {orders: {}} if @orders.empty?
-    @orderItems = OrderItem.where(order_id: @ords.ids).front_view_with_name_key
-    @orderItems = {orderItems: {}} if @orderItems.empty?
-    result = {}.merge!(@orders).merge!(@orderItems)
-    render json: result, status: :ok
+    @orders = Order.where(id: Order.not_paid.ids)
+    render json: @orders.front_view
+    # @orders = @ords.front_view_with_name_key
+    # @orders = {orders: {}} if @orders.empty?
+    # @orderItems = OrderItem.where(order_id: @ords.ids).front_view_with_name_key
+    # @orderItems = {orderItems: {}} if @orderItems.empty?
+    # result = {}.merge!(@orders).merge!(@orderItems)
+    # render json: result, status: :ok
   end
 
   def create
@@ -18,8 +19,9 @@ class V1::OrdersController < V1::BaseController
       @order.order_items << OrderItem.new(orderItem)
     end
     if @order.save
-      result = {}.merge!(@order.front_view_with_name_key).merge!(@order.order_items.front_view_with_name_key)
-      render json: result, status: :ok
+      # result = {}.merge!(@order.front_view_with_name_key).merge!(@order.order_items.front_view_with_name_key)
+      # render json: result, status: :ok
+      render json: @order.front_view, status: :ok
     else
       redner json: @order.errors, status: 400
     end
@@ -48,8 +50,9 @@ class V1::OrdersController < V1::BaseController
     @order.client = order_params[:client] if order_params[:client].present?
     @order.placeTitle = order_params[:placeTitle] if order_params[:placeTitle].present?
     if @order.save
-      result = {}.merge!(@order.front_view_with_name_key).merge!(@order.order_items.front_view_with_name_key)
-      render json: result, status: :ok
+      # result = {}.merge!(@order.front_view_with_name_key).merge!(@order.order_items.front_view_with_name_key)
+      # render json: result, status: :ok
+      render json: @order.front_view, status: :ok
     else
       redner json: @order.errors, status: 400
     end
