@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922134914) do
+ActiveRecord::Schema.define(version: 20170927155635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20170922134914) do
     t.integer  "store_item_id"
     t.float    "diffQty"
     t.float    "storeQty"
+    t.float    "diffSumm"
     t.index ["ingredient_id"], name: "index_inventory_items_on_ingredient_id", using: :btree
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id", using: :btree
   end

@@ -2,11 +2,12 @@ class V1::InventoriesController < V1::BaseController
   before_action :set_inventory, only: [:destroy, :done]
 
   def index
-    @inventories = Inventory.all.front_view
-    @inventories = {} if @inventories.empty?
-    @inventory_items = InventoryItem.all.front_view
-    @inventory_items = {} if @inventory_items.empty?
-    render json: {inventories: @inventories, inventoryItems: @inventory_items}, status: :ok
+    @inventories = Inventory.all
+    render json: @inventories.front_view
+    # @inventories = {} if @inventories.empty?
+    # @inventory_items = InventoryItem.all.front_view
+    # @inventory_items = {} if @inventory_items.empty?
+    # render json: {inventories: @inventories, inventoryItems: @inventory_items}, status: :ok
   end
 
   def create
@@ -18,10 +19,11 @@ class V1::InventoriesController < V1::BaseController
       @inventory.inventory_items << InventoryItem.new(inventItem)
     end
     if @inventory.save
-      render json: {
-        inventories: @inventory.front_view_with_key,
-        inventoryItems: @inventory.inventory_items.front_view
-      }, status: :ok
+      # render json: {
+      #   inventories: @inventory.front_view_with_key,
+      #   inventoryItems: @inventory.inventory_items.front_view
+      # }, status: :ok
+      render json: @inventory.front_view
     else
       render json: @inventory.errors, status: 400
     end
@@ -29,7 +31,7 @@ class V1::InventoriesController < V1::BaseController
 
   def destroy
     if @inventory.destroy
-      render json: @inventory.destroy, status: :ok
+      render json: @inventory.front_view, status: :ok
     else
       render json: @inventory.errors, status: 400
     end
@@ -37,7 +39,7 @@ class V1::InventoriesController < V1::BaseController
 
   def done
     if @inventory.done
-      render json: @inventory.front_view_with_key, status: :ok
+      render json: @inventory.front_view, status: :ok
     else
       render json: @inventory.errors, status: 400
     end
@@ -54,6 +56,6 @@ class V1::InventoriesController < V1::BaseController
   end
 
   def items_params
-    params.permit(inventoryItems: [:store_item_id, :ingredient_id, :qty, :diffQty, :storeQty])
+    params.permit(inventoryItems: [:store_item_id, :ingredient_id, :qty, :diffQty, :storeQty, :diffSumm1])
   end
 end
