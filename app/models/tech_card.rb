@@ -22,9 +22,9 @@ class TechCard < ApplicationRecord
   #   as_json(methods: [:tech_card_item_ids, :store_menu_category_ids])
   # end
   #
-  # def fix_store(qty: 1)
-  #   tech_card_items.fix_store(qty: qty)
-  # end
+  def fix_store(qty: 1)
+    tech_card_items.fix_store(qty: qty)
+  end
 
   private
 

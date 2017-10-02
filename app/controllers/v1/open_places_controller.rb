@@ -3,13 +3,13 @@
 # Обработка вызовов для ОткрытыхСтолов
 class V1::OpenPlacesController < V1::BaseController
   before_action :set_date, only: [:index]
-  before_action :set_open_place, only: [:close, :update]
+  before_action :set_open_place, only: [:close, :update, :add_order]
 
   def index
     # TODO: Посмотреть нужно ли closeTime, т.к. открытый стол мы удаляем при закрытии
-    @open_places = OpenPlace.where(closeTime: nil).all
+    @open_places = OpenPlace.where(id: OpenPlace.where(closeTime: nil).ids)
     @open_places = @open_places.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day, @date.end_of_day) if @date.present?
-    render json: @open_places.front_view, status: :ok
+    render json: @open_places.front_view(with_child: false), status: :ok
   end
 
   def create
@@ -17,6 +17,14 @@ class V1::OpenPlacesController < V1::BaseController
     if @open_place.save
       render json: @open_place.front_view.merge!(@open_place.places.front_view),
              status: :ok
+    else
+      render json: @open_place.errors, status: 400
+    end
+  end
+
+  def add_order
+    if @open_place.create_empty_order
+      render json: @open_place.front_view, status: :ok
     else
       render json: @open_place.errors, status: 400
     end
@@ -37,10 +45,15 @@ class V1::OpenPlacesController < V1::BaseController
     @open_place.attributes = open_place_params
     if @open_place.save
       puts @old_places.as_json
-      fv_places = Place.where(id: @old_places).front_view
-      fv_places[:places].merge!(@open_place.places.front_view[:places])
-      render json: @open_place.front_view.merge!(fv_places),
-             status: :ok
+      # fv_places = Place.where(id: @old_places).front_view
+      # fv_places[:places].merge!(@open_place.places.front_view[:places])
+      # render json: @open_place.front_view.merge!(fv_places),
+      #        status: :ok
+      fv_old_places = Place.where(id: @old_places).front_view(with_child: false)
+      fv_places = @open_place.front_view
+      fv_places = {places: fv_places['places'].merge!(fv_old_places['places'])}
+      fv = @open_place.front_view.merge! fv_places
+      render json: fv, status: :ok
     else
       render json: @open_place.errors, status: 400
     end

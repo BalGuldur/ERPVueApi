@@ -3,7 +3,7 @@
 # Обработка вызовов для БронейСтолов
 class V1::BookingPlacesController < V1::BaseController
   before_action :set_date, only: [:index]
-  before_action :set_booking_place, only: [:close, :update]
+  before_action :set_booking_place, only: [:close, :update, :show, :open]
 
   def index
     # TODO: Выборка бронирования по дате
@@ -12,7 +12,15 @@ class V1::BookingPlacesController < V1::BaseController
                       else
                         BookingPlace.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day, @date.end_of_day)
                       end
-    render json: @booking_places.front_view, status: :ok
+    render json: @booking_places.front_view(with_child: false), status: :ok
+  end
+
+  def show
+    if @booking_place.present?
+      render json: @booking_place.front_view(without_id: true), status: :ok
+    else
+      render json: nil, status: 400
+    end
   end
 
   def create
@@ -20,6 +28,14 @@ class V1::BookingPlacesController < V1::BaseController
     if @booking_place.save
       render json: @booking_place.front_view.merge!(@booking_place.places.front_view),
              status: :ok
+    else
+      render json: @booking_place.errors, status: 400
+    end
+  end
+
+  def open
+    if @booking_place.open
+      render json: @booking_place.front_view, status: :ok
     else
       render json: @booking_place.errors, status: 400
     end

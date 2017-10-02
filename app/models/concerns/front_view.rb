@@ -4,7 +4,8 @@ concern :FrontView do # rubocop:disable Metrics/BlockLength
   # Методы экземпляра класса
 
   # Стандартный Front_view
-  def front_view(collection: false)
+  def front_view(collection: false, without_id: false)
+    return json_front if without_id
     @result = { id => json_front }
     return @result if collection # Если генерим для коллекции возвращаем только объект
     @result = { model_name_camelize => @result }

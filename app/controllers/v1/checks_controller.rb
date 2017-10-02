@@ -60,7 +60,7 @@ class V1::ChecksController < V1::BaseController
 
   def paid
     if @check.paid
-      render json: @check.front_view_with_name_key, status: :ok
+      render json: @check.front_view, status: :ok
     else
       render json: @check.errors, status: 400
     end
@@ -100,9 +100,12 @@ class V1::ChecksController < V1::BaseController
       end
     end
     if @errors.empty?
-      result = {}.merge!(@order.front_view_with_name_key)
-        .merge!(@order.checks.front_view_with_name_key)
-          .merge!(@order.check_items.front_view_with_name_key)
+      # result = {}.merge!(@order.front_view_with_name_key)
+      #   .merge!(@order.checks.front_view_with_name_key)
+      #     .merge!(@order.check_items.front_view_with_name_key)
+      # render json: result, status: :ok
+      result = @order.front_view
+      result.merge!(@order.checks.front_view)
       render json: result, status: :ok
     else
       render json: @errors, status: 400
