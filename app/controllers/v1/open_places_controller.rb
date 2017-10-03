@@ -41,7 +41,7 @@ class V1::OpenPlacesController < V1::BaseController
 
   def update
     @old_places = @open_place.place_ids
-    puts @old_places.as_json
+    # puts @old_places.as_json
     @open_place.attributes = open_place_params
     if @open_place.save
       puts @old_places.as_json

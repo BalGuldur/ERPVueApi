@@ -51,10 +51,16 @@ class V1::BookingPlacesController < V1::BaseController
   end
 
   def update
+    @old_places = @booking_place.place_ids
     @booking_place.attributes = booking_place_params
     if @booking_place.save
-      render json: @booking_place.front_view.merge!(@booking_place.places.front_view),
-             status: :ok
+      # render json: @booking_place.front_view.merge!(@booking_place.places.front_view),
+      #        status: :ok
+      fv_old_places = Place.where(id: @old_places).front_view(with_child: false)
+      fv_places = @booking_place.front_view
+      fv_places = {places: fv_places['places'].merge!(fv_old_places['places'])}
+      fv = @booking_place.front_view.merge! fv_places
+      render json: fv, status: :ok
     else
       render json: @booking_place.errors, status: 400
     end
