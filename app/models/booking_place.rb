@@ -1,12 +1,20 @@
 # rubocop:disable Style/AsciiComments
 # Класс отвечающий за Брони столов
 class BookingPlace < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   before_destroy :reset_place_reference
 
   acts_as_paranoid
 
   has_and_belongs_to_many :places
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'places', type: 'many', rev_type: 'many', index_inc: false }
+    ]
+  end
 
   # Закрытие брони
   def close

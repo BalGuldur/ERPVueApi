@@ -1,4 +1,5 @@
 class WorkDay < ApplicationRecord
+  include FrontViewSecond
   has_many :shifts
   has_many :store_menu_cat_analitics, through: :shifts
   has_many :cash_box_analitics, through: :shifts

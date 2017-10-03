@@ -1,9 +1,17 @@
 class Supply < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
 
   has_many :supply_items, dependent: :destroy
   has_many :ingredients, through: :supply_items
   has_many :store_items, through: :ingredients
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'supply_items', type: 'many', rev_type: 'one', index_inc: true }
+    ]
+  end
 
   def revert
     if performed

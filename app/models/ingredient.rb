@@ -2,11 +2,20 @@
 # Класс отвечающий за ингредиенты
 class Ingredient < ApplicationRecord
   # Импорт стандартного front view
-  include FrontView
+  include FrontViewSecond
 
   has_one :store_item, dependent: :destroy
   has_and_belongs_to_many :store_menu_categories
   has_many :supply_items
+  has_many :tech_card_items
+
+  def self.refs
+    [
+      { model: 'store_item', type: 'one', rev_type: 'one', index_inc: false },
+      { model: 'store_menu_categories', type: 'many', rev_type: 'many', index_inc: false },
+      { model: 'supply_items', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
 
   # def self.front_view
   #   f_v = {}

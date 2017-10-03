@@ -1,7 +1,15 @@
 class Inventory < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   has_many :inventory_items, dependent: :destroy
   after_save :calculate_diff
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'inventory_items', type: 'many', rev_type: 'one', index_inc: true }
+    ]
+  end
 
   # def self.front_view
   #   f_v = {}

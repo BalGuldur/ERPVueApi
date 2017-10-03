@@ -1,5 +1,5 @@
 class StoreItemCounter < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
 
   belongs_to :store_item
 end

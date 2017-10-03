@@ -7,7 +7,7 @@ class V1::IngredientsController < V1::BaseController
     @ingredients = Ingredient.all
     # @ingredients = {} if @ingredients.empty?
     # render json: @ingredients, status: :ok
-    render json: @ingredients.front_view(with_child: false), status: :ok
+    render json: @ingredients.front_view, status: :ok
   end
 
   def create

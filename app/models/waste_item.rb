@@ -2,7 +2,14 @@ class WasteItem < ApplicationRecord
   belongs_to :waste
   belongs_to :ingredient
   belongs_to :store_item
-  include FrontView
+  include FrontViewSecond
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

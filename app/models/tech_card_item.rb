@@ -1,7 +1,16 @@
 class TechCardItem < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   belongs_to :tech_card
   belongs_to :ingredient
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+  [
+    # { model: 'tech_card', type: 'one', rev_type: 'many', index_inc: false },
+    { model: 'ingredient', type: 'one', rev_type: 'many', index_inc: false }
+  ]
+  end
 
   # def self.front_view
   #   f_v = {}

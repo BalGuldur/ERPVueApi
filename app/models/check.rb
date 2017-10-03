@@ -1,11 +1,19 @@
 class Check < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   has_many :check_items, dependent: :destroy
   belongs_to :cash_box
   belongs_to :order
   belongs_to :shift, required: false
 
   serialize :print_job_ids
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'check_items', type: 'many', rev_type: 'one', index_inc: true },
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

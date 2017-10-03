@@ -1,9 +1,16 @@
 class CheckItem < ApplicationRecord
   # after_create :fix_store
-  include FrontView
+  include FrontViewSecond
 
   belongs_to :check
   belongs_to :tech_card, required: false
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

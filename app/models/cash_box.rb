@@ -2,10 +2,16 @@
 # Класс отвечающий за
 class CashBox < ApplicationRecord
   # Добавление стандартного FrontView
-  include FrontView
+  include FrontViewSecond
 
   has_many :cash_box_logs, dependent: :destroy
   has_many :cash_box_analitics
+
+  # Определение связей для front_view
+  def self.refs
+    # Если буду добавлять очень нагружающие logs и analitics то делать это отдельным запросом в controller
+    []
+  end
 
   def change_cash amountChange
     oldCash = self.cash

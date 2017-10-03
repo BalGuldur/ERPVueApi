@@ -1,9 +1,16 @@
 class OrderItem < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   belongs_to :tech_card, required: false
   belongs_to :order
   # has_one :checks, through: :order
   before_save :set_tech_fields
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

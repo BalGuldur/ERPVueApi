@@ -1,7 +1,16 @@
 class Waste < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   has_many :waste_items, dependent: :destroy
   has_many :store_items, through: :waste_items
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'waste_items', type: 'many', rev_type: 'one', index_inc: true },
+        { model: 'store_items', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
 
   # Стандартный вывод для front_view
   # def self.front_view

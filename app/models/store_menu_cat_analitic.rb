@@ -1,5 +1,5 @@
 class StoreMenuCatAnalitic < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   belongs_to :shift
   belongs_to :store_menu_category
 

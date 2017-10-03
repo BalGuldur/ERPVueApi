@@ -1,10 +1,19 @@
 # rubocop:disable Style/AsciiComments
 # Класс отвечающий за залы
 class Hall < ApplicationRecord
+  include FrontViewSecond
   acts_as_paranoid
 
   has_many :places, dependent: :destroy
-  include FrontView
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        # { model: 'tech_card', type: 'one', rev_type: 'many', index_inc: false },
+        { model: 'places', type: 'many', rev_type: 'one', index_inc: true }
+    ]
+  end
 
   # # Стандартный вывод для front_view
   # def self.front_view

@@ -1,7 +1,14 @@
 class InventoryItem < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   belongs_to :inventory
   belongs_to :ingredient
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
 
   # def self.front_view
   #   f_v = {}

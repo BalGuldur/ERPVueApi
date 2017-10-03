@@ -1,11 +1,18 @@
 class SupplyItem < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
 
   before_create :fix_store
 
   belongs_to :supply
   belongs_to :ingredient
   has_one :store_item, through: :ingredient
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

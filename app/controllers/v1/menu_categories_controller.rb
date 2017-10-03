@@ -3,7 +3,7 @@ class V1::MenuCategoriesController < V1::BaseController
 
   def index
     @menu_categories = MenuCategory.all
-    render json: @menu_categories.front_view(with_child: false), status: :ok
+    render json: @menu_categories.front_view(:without_child), status: :ok
   end
 
   def create

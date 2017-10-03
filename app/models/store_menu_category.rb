@@ -1,10 +1,18 @@
 # rubocop:disable Style/AsciiComments
 # Класс отвечающий за категории ингредиентов и техкарт
 class StoreMenuCategory < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   has_and_belongs_to_many :ingredients
   has_and_belongs_to_many :tech_cards
   has_many :store_menu_cat_analitics
+
+  # Определение связей для front_view
+  def self.refs
+    [
+      { model: 'ingredients', type: 'many', rev_type: 'many', index_inc: false },
+      { model: 'tech_cards', type: 'many', rev_type: 'many', index_inc: false }
+    ]
+  end
 
   # def self.front_view
   #   f_v = {}

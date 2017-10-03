@@ -2,7 +2,7 @@
 # Класс отвечающий за
 class CashBoxAnalitic < ApplicationRecord
   # Добавление стандартного FrontView
-  include FrontView
+  include FrontViewSecond
 
   belongs_to :shift
   belongs_to :cash_box

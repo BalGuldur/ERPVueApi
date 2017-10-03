@@ -1,10 +1,20 @@
 class TechCard < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   before_destroy :unlink_check_items
   has_many :check_items
   has_many :tech_card_items, dependent: :destroy
   has_and_belongs_to_many :store_menu_categories
   belongs_to :menu_category, required: false
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        # { model: 'check_items', type: 'many', rev_type: 'one', index_inc: false },
+        { model: 'tech_card_items', type: 'many', rev_type: 'one', index_inc: true },
+        { model: 'store_menu_categories', type: 'many', rev_type: 'many', index_inc: false },
+    ]
+  end
 
   # def self.front_view
   #   f_v = {}

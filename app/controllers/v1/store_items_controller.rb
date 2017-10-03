@@ -3,7 +3,7 @@ class V1::StoreItemsController < V1::BaseController
 
   def index
     @store_items = StoreItem.all
-    render json: @store_items.front_view(with_child: false), status: :ok
+    render json: @store_items.front_view(:without_child), status: :ok
   end
 
   def create

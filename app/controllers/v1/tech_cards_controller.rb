@@ -6,7 +6,7 @@ class V1::TechCardsController < V1::BaseController
 
   def index
     @tech_cards = TechCard.all
-    render json: @tech_cards.front_view(with_child: false), status: :ok
+    render json: @tech_cards.front_view, status: :ok
   end
 
   def create

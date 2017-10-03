@@ -1,11 +1,20 @@
 class Order < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   belongs_to :open_place, required: false
   has_many :order_items, dependent: :destroy
   has_many :checks, dependent: :destroy
   has_many :check_items, through: :checks
   scope :not_paid, -> {includes(:checks).where('checks' => {paidOn: nil})}
   before_save :set_summ
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'order_items', type: 'many', rev_type: 'one', index_inc: true },
+        { model: 'checks', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
 
   # def self.front_view_with_name_key
   #   f_v = {}

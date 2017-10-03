@@ -3,7 +3,7 @@ class V1::CashBoxesController < V1::BaseController
 
   def index
     @cash_boxes = CashBox.all
-    render json: @cash_boxes.front_view(with_child: false), status: :ok
+    render json: @cash_boxes.front_view, status: :ok
   end
 
   def create

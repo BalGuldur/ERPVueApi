@@ -1,7 +1,7 @@
 # rubocop:disable Style/AsciiComments
 # Класс отвечающий за столы
 class OpenPlace < ApplicationRecord
-  include FrontView
+  include FrontViewSecond
   before_destroy :reset_place_reference
   before_create :create_empty_order
 
@@ -9,6 +9,15 @@ class OpenPlace < ApplicationRecord
 
   has_many :places
   has_many :orders
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        { model: 'places', type: 'many', rev_type: 'one', index_inc: false },
+        { model: 'orders', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
 
   # Закрытие стола
   def close
