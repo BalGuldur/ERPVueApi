@@ -11,48 +11,70 @@ class Inventory < ApplicationRecord
     ]
   end
 
-  # def self.front_view
-  #   f_v = {}
-  #   all.order(:doDate).each do |ing|
-  #     f_v.merge!(ing.front_view_with_key)
-  #   end
-  #   f_v
-  # end
-  #
-  # def front_view_with_key
-  #   {id => front_view}
-  # end
-  #
-  # def front_view_with_name
-  #   {inventory: front_view}
-  # end
-  #
-  # def front_view
-  #   as_json(methods: [:inventory_item_ids])
-  # end
-
-  def done
-    # TODO: Завернуть вызов в транзакцию
-    inventory_items.each do |invent_item|
-      unless invent_item.store_merge
-        errors << {inventory_item: 'error on store_merge'}
+  # Отложить инвентаризацию
+  def later(inventory_params, inven_items_params)
+    transaction do
+      if id.nil?
+        create_new(inventory_params, inven_items_params)
+      else
+        update_old(inventory_params, inven_items_params)
       end
+      self.status = 'later'
+      save!
     end
-    if errors.empty?
+  end
+
+  def done(inventory_params, inven_items_params)
+    transaction do
+      if id.nil?
+        create_new(inventory_params, inven_items_params)
+      else
+        update_old(inventory_params, inven_items_params)
+      end
+      fix_store
       self.status = 'done'
-      save
+      save!
     end
-    errors.empty?
+  end
+
+  def update_old(inventory_params, inven_items_params)
+    transaction do
+      self.doDate = inventory_params[:doDate]
+      inven_items_params.each do |key, inven_item|
+        finded_inven_item = inventory_items.find_by(store_item_id: inven_item[:store_item_id])
+        if finded_inven_item.present?
+          inventory_items.find(finded_inven_item.id).update inven_item
+        else
+          inventory_items << InventoryItem.new(inven_item)
+        end
+      end
+      save!
+    end
+  end
+
+  def create_new(inventory_params, inven_items_params)
+    transaction do
+      self.doDate = inventory_params[:doDate]
+      inven_items_params.each do |key, inven_item|
+        # puts("item params key #{key}, inventItem #{inven_item.as_json}")
+        inventory_items << InventoryItem.new(inven_item)
+      end
+      save!
+    end
   end
 
   private
 
+  def fix_store
+    inventory_items.find_each {|item| item.store_merge}
+  end
+
   def calculate_diff
     self.diffQty = 0
     self.diffSumm = 0
-    inventory_items.each do |inv_item|
+    inventory_items.find_each do |inv_item|
       self.diffQty = diffQty + 1 if inv_item.diffQty != 0
-      self.diffSumm = diffSumm + inv_item.diffSumm
+      self.diffSumm = diffSumm + inv_item.diffSumm if inv_item.diffQty != 0
     end
   end
 end

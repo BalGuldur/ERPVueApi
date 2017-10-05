@@ -1,13 +1,10 @@
 class V1::InventoriesController < V1::BaseController
-  before_action :set_inventory, only: [:destroy, :done]
+  before_action :set_inventory, only: [:destroy]
+  before_action :set_or_new_inventory, only: [:later, :done]
 
   def index
     @inventories = Inventory.all
     render json: @inventories.front_view
-    # @inventories = {} if @inventories.empty?
-    # @inventory_items = InventoryItem.all.front_view
-    # @inventory_items = {} if @inventory_items.empty?
-    # render json: {inventories: @inventories, inventoryItems: @inventory_items}, status: :ok
   end
 
   def create
@@ -29,6 +26,22 @@ class V1::InventoriesController < V1::BaseController
     end
   end
 
+  def later
+    if @inventory.later(inventory_params, items_params)
+      render json: @inventory.front_view, status: :ok
+    else
+      render json: @inventory.errors, status: 400
+    end
+  end
+
+  def done
+    if @inventory.done(inventory_params, items_params)
+      render json: @inventory.front_view.merge!(StoreItem.front_view), status: :ok
+    else
+      render json: @inventory.errors, status: 400
+    end
+  end
+
   def destroy
     if @inventory.destroy
       render json: @inventory.front_view, status: :ok
@@ -37,25 +50,28 @@ class V1::InventoriesController < V1::BaseController
     end
   end
 
-  def done
-    if @inventory.done
-      render json: @inventory.front_view, status: :ok
-    else
-      render json: @inventory.errors, status: 400
-    end
-  end
-
   private
+
+  def set_or_new_inventory
+    @inventory = if inventory_params[:id] < 1
+                   Inventory.new
+                 else
+                   Inventory.find(inventory_params[:id])
+                 end
+  end
 
   def set_inventory
     @inventory = Inventory.find(params[:id])
   end
 
   def inventory_params
-    params.require(:inventory).permit(:doDate, :status)
+    params.require(:inventory).permit(:doDate, :id)
   end
 
   def items_params
-    params.permit(inventoryItems: [:store_item_id, :ingredient_id, :qty, :diffQty, :storeQty, :diffSumm1])
+    keys = {}
+    item_keys = [:store_item_id, :ingredient_id, :qty, :diffQty, :storeQty, :diffSumm]
+    params[:inventoryItems].keys.each {|key| keys.merge!({key => item_keys})}
+    params.require(:inventoryItems).permit(keys)
   end
 end

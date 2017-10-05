@@ -10,7 +10,7 @@ class StoreItem < ApplicationRecord
     []
   end
 
-  def self.add_supply params
+  def self.add_supply(params)
     ingredient = Ingredient.find(params[:ingredient_id])
     price = params[:price]
     remains = params[:remains]
@@ -26,27 +26,9 @@ class StoreItem < ApplicationRecord
     end
   end
 
-  # def self.front_view
-  #   f_v = {}
-  #   all.find_each do |ing|
-  #     f_v.merge!(ing.front_view_with_key)
-  #   end
-  #   f_v
-  # end
-  #
-  # def front_view_with_key
-  #   {id => front_view}
-  # end
-  #
-  # def front_view
-  #   as_json
-  # end
-
   private
 
   def set_counter
-    puts "remains was #{remains_was}"
-    puts "remains now #{remains}"
     @store_item_counter = StoreItemCounter.new(
       store_item: self,
       storeOldQty: remains_was,
