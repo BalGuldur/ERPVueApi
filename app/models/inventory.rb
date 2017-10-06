@@ -73,8 +73,8 @@ class Inventory < ApplicationRecord
     diffQty = 0
     diffSumm = 0
     inventory_items.find_each do |inv_item|
-      diffQty = diffQty + 1 if inv_item.diffQty != 0
-      diffSumm = diffSumm + inv_item.diffSumm if inv_item.diffQty != 0
+      diffQty = diffQty + 1 if !inv_item.diffQty.nil? && inv_item.diffQty != 0
+      diffSumm = diffSumm + inv_item.diffSumm if !inv_item.diffQty.nil? && inv_item.diffQty != 0
     end
     self.update_column(:diffQty, diffQty)
     self.update_column(:diffSumm, diffSumm)
