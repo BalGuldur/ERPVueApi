@@ -9,6 +9,13 @@ class CashBoxAnalitic < ApplicationRecord
 
   serialize :cashBoxSave
 
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+    ]
+  end
+
   # # Стандартный набор для генерации front_view
   # def self.front_view_with_name_key
   #   f_v = {}

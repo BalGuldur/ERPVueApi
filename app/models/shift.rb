@@ -1,9 +1,19 @@
 class Shift < ApplicationRecord
+  include FrontViewSecond
   belongs_to :work_day
   # TODO: Подумать над dependent: :destroy
   has_many :cash_box_analitics, dependent: :destroy
   has_many :store_menu_cat_analitics, dependent: :destroy
   has_many :checks, dependent: :destroy
+
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        # { model: 'tech_card', type: 'one', rev_type: 'many', index_inc: false },
+        { model: 'checks', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
 
   def store_cat_analitic
     self.store_menu_cat_analitics.includes(:store_menu_category).group(:title).sum(:qty)
@@ -36,38 +46,38 @@ class Shift < ApplicationRecord
     end
   end
 
-  # Стандартный набор для генерации front_view
-  def self.front_view_with_name_key
-    f_v = {}
-    all.includes(:store_menu_cat_analitics, :cash_box_analitics).find_each do |shift|
-      f_v.merge!(shift.front_view_with_key)
-    end
-    {shifts: f_v}
-  end
-
-  def self.front_view
-    f_v = {}
-    all.each do |shift|
-      f_v.merge!(shift.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_name_key
-    {shifts: front_view_with_key}
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json(methods: [:store_menu_cat_analitic_ids, :cash_box_analitic_ids])
-  end
-
-  def file_name
-    return "#{id}-#{DateTime.now}-shift.pdf"
-  end
+  # # Стандартный набор для генерации front_view
+  # def self.front_view_with_name_key
+  #   f_v = {}
+  #   all.includes(:store_menu_cat_analitics, :cash_box_analitics).find_each do |shift|
+  #     f_v.merge!(shift.front_view_with_key)
+  #   end
+  #   {shifts: f_v}
+  # end
+  #
+  # def self.front_view
+  #   f_v = {}
+  #   all.each do |shift|
+  #     f_v.merge!(shift.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_name_key
+  #   {shifts: front_view_with_key}
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:store_menu_cat_analitic_ids, :cash_box_analitic_ids])
+  # end
+  #
+  # def file_name
+  #   return "#{id}-#{DateTime.now}-shift.pdf"
+  # end
 
   def printer
     CupsPrinter.new(CupsPrinter.get_all_printer_names.first)

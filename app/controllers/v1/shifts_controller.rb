@@ -5,9 +5,9 @@ class V1::ShiftsController < V1::BaseController
     @work_day = WorkDay.active
     if @work_day.present?
       @shifts = @work_day.shifts
-      result = @shifts.front_view_with_name_key
-      result.merge! CashBoxAnalitic.where(shift: @shifts).front_view_with_name_key
-      result.merge! StoreMenuCatAnalitic.where(shift: @shifts).front_view_with_name_key
+      result = @shifts.front_view
+      result.merge! CashBoxAnalitic.where(shift: @shifts).front_view
+      result.merge! StoreMenuCatAnalitic.where(shift: @shifts).front_view
       render json: result.as_json, status: :ok
     else
       render json: nil, status: :ok
@@ -23,9 +23,9 @@ class V1::ShiftsController < V1::BaseController
     if @shift.close close_params[:employee],
                     close_params[:cashBoxes]
       @shifts = Shift.where(id: @shift.id)
-      result = @shifts.front_view_with_name_key
-      result.merge! CashBoxAnalitic.where(shift: @shifts).front_view_with_name_key
-      result.merge! StoreMenuCatAnalitic.where(shift: @shifts).front_view_with_name_key
+      result = @shifts.front_view
+      result.merge! CashBoxAnalitic.where(shift: @shifts).front_view
+      result.merge! StoreMenuCatAnalitic.where(shift: @shifts).front_view
       render json: result.as_json, status: :ok
     else
       render json: @shift.errors, status: 400

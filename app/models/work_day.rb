@@ -4,6 +4,15 @@ class WorkDay < ApplicationRecord
   has_many :store_menu_cat_analitics, through: :shifts
   has_many :cash_box_analitics, through: :shifts
 
+  # Определение связей для генерации front veiw
+  # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
+  def self.refs
+    [
+        # { model: 'tech_card', type: 'one', rev_type: 'many', index_inc: false },
+        { model: 'shifts', type: 'many', rev_type: 'one', index_inc: false }
+    ]
+  end
+
   def self.close
     @work_day = WorkDay.where(closeOn: nil).last
     if (@work_day.present? and !@work_day.shift_is_open)
@@ -37,25 +46,25 @@ class WorkDay < ApplicationRecord
     {workDays: f_v}
   end
 
-  def self.front_view
-    f_v = {}
-    all.includes(:shifts).find_each do |work_day|
-      f_v.merge!(work_day.front_view_with_key)
-    end
-    f_v
-  end
-
-  def front_view_with_name_key
-    {workDays: front_view_with_key}
-  end
-
-  def front_view_with_key
-    {id => front_view}
-  end
-
-  def front_view
-    as_json(methods: [:shift_ids])
-  end
+  # def self.front_view
+  #   f_v = {}
+  #   all.includes(:shifts).find_each do |work_day|
+  #     f_v.merge!(work_day.front_view_with_key)
+  #   end
+  #   f_v
+  # end
+  #
+  # def front_view_with_name_key
+  #   {workDays: front_view_with_key}
+  # end
+  #
+  # def front_view_with_key
+  #   {id => front_view}
+  # end
+  #
+  # def front_view
+  #   as_json(methods: [:shift_ids])
+  # end
 
   def file_name
     return "#{id}-#{DateTime.now}-workDay.pdf"

@@ -9,7 +9,7 @@ class V1::WorkDaysController < V1::BaseController
   def index_active
     @work_day = WorkDay.active
     if @work_day.present?
-      render json: @work_day.front_view_with_name_key, status: :ok
+      render json: @work_day.front_view, status: :ok
     else
       render json: {workDays: nil}, status: :ok
     end
