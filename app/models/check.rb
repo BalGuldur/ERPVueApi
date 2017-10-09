@@ -46,6 +46,7 @@ class Check < ApplicationRecord
       @work_day.save!
       @shift.save!
       self.shift = @shift
+      save!
       check_items.each &:fix_cat_analitic
     end
   end

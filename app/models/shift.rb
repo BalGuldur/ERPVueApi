@@ -11,7 +11,8 @@ class Shift < ApplicationRecord
   def self.refs
     [
         # { model: 'tech_card', type: 'one', rev_type: 'many', index_inc: false },
-        { model: 'checks', type: 'many', rev_type: 'one', index_inc: false }
+        { model: 'checks', type: 'many', rev_type: 'one', index_inc: false },
+        { model: 'cash_box_analitics', type: 'many', rev_type: 'one', index_inc: false }
     ]
   end
 
@@ -41,7 +42,6 @@ class Shift < ApplicationRecord
         @cash_box_analitic.save!
         cashBox.encash @cash
       end
-
       save!
     end
   end

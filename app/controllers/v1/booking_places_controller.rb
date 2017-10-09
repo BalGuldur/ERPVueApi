@@ -10,7 +10,7 @@ class V1::BookingPlacesController < V1::BaseController
     @booking_places = if @date.nil?
                         BookingPlace.all
                       else
-                        BookingPlace.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day, @date.end_of_day)
+                        BookingPlace.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day + 7.hours, @date.end_of_day + 7.hours)
                       end
     render json: @booking_places.front_view(with_child: false), status: :ok
   end

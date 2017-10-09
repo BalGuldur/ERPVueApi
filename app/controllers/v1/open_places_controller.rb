@@ -8,7 +8,7 @@ class V1::OpenPlacesController < V1::BaseController
   def index
     # TODO: Посмотреть нужно ли closeTime, т.к. открытый стол мы удаляем при закрытии
     @open_places = OpenPlace.where(id: OpenPlace.where(closeTime: nil).ids)
-    @open_places = @open_places.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day, @date.end_of_day) if @date.present?
+    @open_places = @open_places.where('"openTime" >= ? AND "openTime" <= ?', @date.beginning_of_day + 7.hours, @date.end_of_day + 7.hours) if @date.present?
     render json: @open_places.front_view(with_child: false), status: :ok
   end
 
