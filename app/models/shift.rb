@@ -20,7 +20,7 @@ class Shift < ApplicationRecord
     self.store_menu_cat_analitics.includes(:store_menu_category).group(:title).sum(:qty)
   end
 
-  def close employee, cashBoxes
+  def close(employee, purchaseSumm, cashBoxes)
     transaction do
       self.closeOn = DateTime.now
       # Сохраняем для избежания пересечения данных
@@ -29,18 +29,22 @@ class Shift < ApplicationRecord
       CashBox.all.each do |cashBox|
         # TODO: Проверить необходимость to_s
         @realCash = cashBoxes[cashBox.id.to_s] && cashBoxes[cashBox.id.to_s]['realCash']
-        @purchaseSumm = cashBoxes[cashBox.id.to_s] && cashBoxes[cashBox.id.to_s]['purchaseSumm']
-        @cash = cashBox.cash
-        @cash_box_analitic = CashBoxAnalitic.new(
-          cash: @cash,
-          cash_box: cashBox,
-          cashBoxSave: cashBox.as_json,
-          purchaseSumm: @purchaseSumm,
-          realCash: @realCash,
-          shift: self
-        )
-        @cash_box_analitic.save!
-        cashBox.encash @cash
+        if @realCash
+          @cash_box_analitic = CashBoxAnalitic.new(cash_box: cashBox, realCash: @realCash, shift: self)
+          @cash_box_analitic.fix_cash(purchaseSumm)
+        end
+        # @purchaseSumm = cashBoxes[cashBox.id.to_s] && cashBoxes[cashBox.id.to_s]['purchaseSumm']
+        # @cash = cashBox.cash
+        # @cash_box_analitic = CashBoxAnalitic.new(
+        #   cash: @cash,
+        #   cash_box: cashBox,
+        #   cashBoxSave: cashBox.as_json,
+        #   purchaseSumm: @purchaseSumm,
+        #   realCash: @realCash,
+        #   shift: self
+        # )
+        # @cash_box_analitic.save!
+        # cashBox.encash @cash_box_analitic
       end
       save!
     end

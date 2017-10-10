@@ -17,7 +17,7 @@ class V1::WorkDaysController < V1::BaseController
 
   def shifts
     if @work_day.present?
-      render json: @work_day.shifts.front_view_with_name_key, status: :ok
+      render json: @work_day.shifts.front_view, status: :ok
     else
       render json: @work_day, status: 400
     end
@@ -26,7 +26,7 @@ class V1::WorkDaysController < V1::BaseController
   def close
     @work_day = WorkDay.close
     if @work_day.present?
-      render json: @work_day.front_view_with_name_key, status: :ok
+      render json: @work_day.front_view, status: :ok
     else
       render json: @work_day.errors, status: 400
     end

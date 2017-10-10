@@ -20,7 +20,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :shifts, only: [] do
       get 'index', on: :collection
       get 'index_active', on: :collection
-      put 'close', on: :member
+      post 'close', on: :member
       get 'print', on: :member
     end
     resources :encash, only: [:create] do

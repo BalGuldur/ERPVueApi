@@ -16,6 +16,26 @@ class CashBoxAnalitic < ApplicationRecord
     ]
   end
 
+  def fix_cash purchaseSumm
+    transaction do
+      self.cash = cash_box.cash
+      self.cashBoxSave = cash_box.as_json
+      # TODO: Сделать checkbox
+      self.purchaseSumm = if cash_box.title == 'Наличные'
+                            purchaseSumm
+                          else
+                            0
+                          end
+      set_diff_cash
+      cash_box.encash cash
+      save!
+    end
+  end
+
+  def set_diff_cash
+    self.diffCash = cash - realCash - purchaseSumm
+  end
+
   # # Стандартный набор для генерации front_view
   # def self.front_view_with_name_key
   #   f_v = {}
