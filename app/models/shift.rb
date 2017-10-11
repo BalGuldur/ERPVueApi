@@ -79,9 +79,9 @@ class Shift < ApplicationRecord
   #   as_json(methods: [:store_menu_cat_analitic_ids, :cash_box_analitic_ids])
   # end
   #
-  # def file_name
-  #   return "#{id}-#{DateTime.now}-shift.pdf"
-  # end
+  def file_name
+    return "#{id}-#{DateTime.now}-shift.pdf"
+  end
 
   def printer
     CupsPrinter.new(CupsPrinter.get_all_printer_names.first)
