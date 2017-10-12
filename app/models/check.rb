@@ -36,7 +36,7 @@ class Check < ApplicationRecord
       check_items.each &:fix_store
       self.paidOn = DateTime.now
       save!
-      cash_box.change_cash summ
+      cash_box.change_cash summ, id
       # Выбираем открытый рабочий день или создаем новый
       @work_day = WorkDay.where(closeOn: nil).last
       @work_day = WorkDay.new(openOn: DateTime.now) if !@work_day.present?

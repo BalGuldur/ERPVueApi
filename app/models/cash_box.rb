@@ -13,11 +13,11 @@ class CashBox < ApplicationRecord
     []
   end
 
-  def change_cash amountChange
+  def change_cash amountChange = 0, object_id = nil
     oldCash = self.cash
     newCash = (cash || 0) + amountChange
     self.cash = newCash
-    log = CashBoxLog.new oldCash: oldCash, newCash: newCash, diff: amountChange
+    log = CashBoxLog.new oldCash: oldCash, newCash: newCash, diff: amountChange, object_id: object_id
     self.cash_box_logs << log
   # TODO: Добавить cash log
     self.save!
