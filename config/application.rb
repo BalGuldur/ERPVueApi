@@ -2,6 +2,9 @@ require_relative 'boot'
 
 require 'rails/all'
 
+# Для работы faye
+require 'net/http'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

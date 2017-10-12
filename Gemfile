@@ -6,6 +6,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# Обмен сообщениями
+gem 'faye'
+
 # Изменение ENV для cupslib
 gem 'figaro'
 
@@ -61,6 +64,8 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Добавлено мной
   gem 'rubocop', require: false
+
+  gem 'thin'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
