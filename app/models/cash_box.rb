@@ -13,7 +13,7 @@ class CashBox < ApplicationRecord
     []
   end
 
-  def change_cash amountChange: 0, object_id: nil
+  def change_cash amountChange = 0, object_id = nil
     oldCash = self.cash
     newCash = (cash || 0) + amountChange
     self.cash = newCash
