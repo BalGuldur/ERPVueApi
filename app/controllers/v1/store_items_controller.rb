@@ -1,5 +1,5 @@
 class V1::StoreItemsController < V1::BaseController
-  before_action :set_store_item, only: [:destroy]
+  before_action :set_store_item, only: [:destroy, :update]
 
   def index
     @store_items = StoreItem.all
@@ -10,6 +10,15 @@ class V1::StoreItemsController < V1::BaseController
     @store_item = StoreItem.add_supply(store_item_params)
     if @store_item.save
       render json: @store_item, status: :ok
+    else
+      render json: @store_item.errors, status: 404
+    end
+  end
+
+  def update
+    @store_item.attributes = store_item_params
+    if @store_item.save
+      render json: @store_item.front_view
     else
       render json: @store_item.errors, status: 404
     end
