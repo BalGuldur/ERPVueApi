@@ -20,7 +20,7 @@ class Shift < ApplicationRecord
     self.store_menu_cat_analitics.includes(:store_menu_category).group(:title).sum(:qty)
   end
 
-  def close(employee, purchaseSumm, cashBoxes)
+  def close(employee, purchaseSumm, notPaidStaffSumm, cashBoxes)
     transaction do
       self.closeOn = DateTime.now
       # Сохраняем для избежания пересечения данных
@@ -31,7 +31,7 @@ class Shift < ApplicationRecord
         @realCash = cashBoxes[cashBox.id.to_s] && cashBoxes[cashBox.id.to_s]['realCash']
         if @realCash
           @cash_box_analitic = CashBoxAnalitic.new(cash_box: cashBox, realCash: @realCash, shift: self)
-          @cash_box_analitic.fix_cash(purchaseSumm)
+          @cash_box_analitic.fix_cash(purchaseSumm, notPaidStaffSumm)
         end
         # @purchaseSumm = cashBoxes[cashBox.id.to_s] && cashBoxes[cashBox.id.to_s]['purchaseSumm']
         # @cash = cashBox.cash

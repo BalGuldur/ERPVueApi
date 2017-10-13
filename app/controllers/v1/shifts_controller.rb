@@ -22,6 +22,7 @@ class V1::ShiftsController < V1::BaseController
   def close
     if @shift.close close_params[:employee],
                     close_params[:purchaseSumm],
+                    close_params[:notPaidStaffSumm],
                     close_params[:cashBoxAnalitics]
       @shifts = Shift.where(id: @shift.id)
       result = @shifts.front_view
@@ -62,6 +63,6 @@ class V1::ShiftsController < V1::BaseController
   end
 
   def close_params
-    params.permit(:employee, :purchaseSumm, cashBoxAnalitics: [:id, :title, :realCash])
+    params.permit(:employee, :purchaseSumm, :notPaidStaffSumm, cashBoxAnalitics: [:id, :title, :realCash])
   end
 end

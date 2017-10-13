@@ -16,7 +16,7 @@ class CashBoxAnalitic < ApplicationRecord
     ]
   end
 
-  def fix_cash purchaseSumm
+  def fix_cash purchaseSumm, notPaidStaffSumm
     transaction do
       self.cash = cash_box.cash
       self.cashBoxSave = cash_box.as_json
@@ -26,6 +26,11 @@ class CashBoxAnalitic < ApplicationRecord
                           else
                             0
                           end
+      self.notPaidStaffSumm = if cash_box.title = 'Наличные'
+                                notPaidStaffSumm
+                              else
+                                0
+                              end
       set_diff_cash
       cash_box.encash cash
       save!
@@ -33,7 +38,7 @@ class CashBoxAnalitic < ApplicationRecord
   end
 
   def set_diff_cash
-    self.diffCash = cash - realCash - purchaseSumm
+    self.diffCash = cash - realCash - purchaseSumm - notPaidStaffSumm
   end
 
   # # Стандартный набор для генерации front_view
