@@ -18,6 +18,15 @@ class V1::ChecksController < V1::BaseController
   def print
     checks_params[:checks].each do |key, check|
       @check = Check.find(key)
+      @order = @check.order
+      if @order.open_place.present?
+        @places_title = ''
+        @order.open_place.places.find_each { |p| @places_title += p.title }
+        @open_time = @order.open_place.openTime
+      else
+        @places_title = @order.placeTitle
+        @open_time = @order.created_at
+      end
       # Удаляем все уже запущенные задания на печать этого чека
       @check.cancel_print
       # Генерируем имя файла (нужно сделать отдельно, т.к. вызывается в двух местах)
