@@ -26,7 +26,7 @@ class CashBoxAnalitic < ApplicationRecord
                           else
                             0
                           end
-      self.notPaidStaffSumm = if cash_box.title = 'Наличные'
+      self.notPaidStaffSumm = if cash_box.title == 'Наличные'
                                 notPaidStaffSumm
                               else
                                 0
