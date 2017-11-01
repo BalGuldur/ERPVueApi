@@ -57,13 +57,13 @@ class V1::OrdersController < V1::BaseController
       redner json: @order.errors, status: 400
     end
   end
-  
+
   private
 
   def set_order
     @order = Order.find(params[:id])
   end
-  
+
   def order_params
     params.require(:order).permit(:placeTitle, :client)
   end

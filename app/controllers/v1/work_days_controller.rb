@@ -41,6 +41,7 @@ class V1::WorkDaysController < V1::BaseController
     @summ = @st_men_cat_ans.group(:title).sum(:summ)
     @cash_box_ans = @work_day.cash_box_analitics.includes(:cash_box)
     @realCash = @cash_box_ans.group(:title).sum(:realCash)
+    @staffSumm = @cash_box_ans.group(:title).sum(:notPaidStaffSumm)
     @purchaseSumm = @cash_box_ans.group(:title).sum(:purchaseSumm)
     @cash = @cash_box_ans.group(:title).sum(:cash)
     @cash_boxes = CashBox.order(:id).pluck(:title)

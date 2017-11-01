@@ -30,6 +30,28 @@ class OpenPlace < ApplicationRecord
     self.orders << @order
   end
 
+  def last_or_new_order
+    orders.present? ? orders.last : Order.new(client: name, open_place: self)
+  end
+
+  def add_hookah_order items
+    items.each {|item| puts item.as_json}
+    transaction do
+      @order = last_or_new_order
+      @order.add_items items
+      @order.save!
+    end
+  end
+
+  # def add_or_create_order
+  #   transaction do
+  #     @order = orders.last
+  #     unless @order.present?
+  #       @order = Order.new(client: name)
+  #     end
+  #   end
+  # end
+
   # Стандартный вывод для front_view
   # def self.front_view
   #   f_v = {}

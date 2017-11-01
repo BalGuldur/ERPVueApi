@@ -1,9 +1,21 @@
 class V1::StoreMenuCategoriesController < V1::BaseController
-  before_action :set_store_menu_category, only: [:destroy, :update]
+  before_action :set_store_menu_category, only: [:destroy, :update, :tech_cards]
 
   def index
     @store_menu_categories = StoreMenuCategory.all
     render json: @store_menu_categories.front_view, status: :ok
+  end
+
+  def hookah_tech_card_ids
+    # TODO: Сделать настраиваемым полем
+    @store_menu_categories = StoreMenuCategory.where(title: 'Кальян')
+    if !@store_menu_categories.empty?
+      result = TechCard.includes(:store_menu_categories)
+                   .where(store_menu_categories: {id: @store_menu_categories.ids}).ids
+      render json: result, status: :ok
+    else
+      render json: nil, status: 404
+    end
   end
 
   def create

@@ -16,6 +16,20 @@ class Order < ApplicationRecord
     ]
   end
 
+  def add_items items
+    # items: [{qty: кол-во, tech_card_id: ID тех карты}]
+    items.each do |item|
+      order_items << OrderItem.new_by_item(item)
+    end
+    self.calc_summ
+    true
+  end
+
+  def calc_summ
+    summ = 0
+    self.order_items.each {|item| summ += item.summ}
+  end
+
   # def self.front_view_with_name_key
   #   f_v = {}
   #   all.includes(:order_items, :checks).find_each do |order|

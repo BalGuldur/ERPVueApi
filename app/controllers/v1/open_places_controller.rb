@@ -3,7 +3,7 @@
 # Обработка вызовов для ОткрытыхСтолов
 class V1::OpenPlacesController < V1::BaseController
   before_action :set_date, only: [:index]
-  before_action :set_open_place, only: [:close, :update, :add_order]
+  before_action :set_open_place, only: [:close, :update, :add_order, :add_or_create_order, :add_hookah_order]
 
   def index
     # TODO: Посмотреть нужно ли closeTime, т.к. открытый стол мы удаляем при закрытии
@@ -22,8 +22,25 @@ class V1::OpenPlacesController < V1::BaseController
     end
   end
 
+  def add_hookah_order
+    puts hookah_order_items_params.as_json
+    if @open_place.add_hookah_order(hookah_order_items_params[:items])
+      render json: @open_place.orders.last.front_view, status: :ok
+    else
+      render json: @open_place.errors, status: 400
+    end
+  end
+
   def add_order
     if @open_place.create_empty_order
+      render json: @open_place.front_view, status: :ok
+    else
+      render json: @open_place.errors, status: 400
+    end
+  end
+
+  def add_or_create_order
+    if @open_place.add_or_create_order
       render json: @open_place.front_view, status: :ok
     else
       render json: @open_place.errors, status: 400
@@ -73,5 +90,9 @@ class V1::OpenPlacesController < V1::BaseController
 
   def open_place_params
     params.require(:open_place).permit(:name, :phone, :countGuests, place_ids: [])
+  end
+
+  def hookah_order_items_params
+    params.permit(items: [:qty, :tech_card_id])
   end
 end

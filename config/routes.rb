@@ -7,6 +7,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :open_places, only: [:index, :create, :update] do
       delete 'close', on: :member
       post 'add_order', on: :member
+      post 'add_hookah_order', on: :member
+      post 'add_or_create_order', on: :member
     end
     resources :places, only: [:create, :update, :destroy]
     resources :halls, only: [:index, :create, :update, :destroy]
@@ -49,6 +51,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :check_items, only: [:index] do
     end
     resources :store_menu_categories, only: [:create, :destroy, :update, :index] do
+      get 'hookah_tech_card_ids', on: :collection
     end
     resources :cash_boxes, only: [:create, :destroy, :update, :index] do
     end

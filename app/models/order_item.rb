@@ -12,6 +12,24 @@ class OrderItem < ApplicationRecord
     ]
   end
 
+  def calc_summ
+    self.summ = self.qty * self.techCardPrice
+  end
+
+  def store_tech_card
+    self.techCardPrice = tech_card.price
+    self.techCardTitle = tech_card.title
+  end
+
+  def self.new_by_item item
+    # item: {qty: кол-во, tech_card_id: ID тех карты}
+    @tech_card = TechCard.find(item[:tech_card_id])
+    @order_item = new(qty: item[:qty], tech_card: @tech_card)
+    @order_item.store_tech_card
+    @order_item.calc_summ
+    @order_item
+  end
+
   # def self.front_view_with_name_key
   #   f_v = {}
   #   all.find_each do |order_item|
