@@ -1,6 +1,8 @@
 class WorkDay < ApplicationRecord
   include FrontViewSecond
   has_many :shifts
+  has_many :checks, through: :shifts
+  has_many :check_items, through: :checks
   has_many :store_menu_cat_analitics, through: :shifts
   has_many :cash_box_analitics, through: :shifts
 
@@ -22,8 +24,22 @@ class WorkDay < ApplicationRecord
   end
 
   def self.active
-    @work_day = WorkDay.where(closeOn: nil).last
-    @work_day
+    # TODO: Проверить работу WorkDay.active
+    # @work_day = WorkDay.where(closeOn: nil).last
+    # @work_day
+    WorkDay.where(closeOn: nil).last
+  end
+
+  def self.active_or_new
+    active.present? ? active : WorkDay.new(openOn: DateTime.now)
+  end
+
+  def active_shift
+    self.shifts.where(closeOn: nil).last
+  end
+
+  def active_shift_or_new
+    active_shift.present? ? active_shift : Shift.new(work_day: self, openOn: DateTime.now)
   end
 
   def shift_is_open
@@ -82,7 +98,7 @@ class WorkDay < ApplicationRecord
     # footer_size = 40
     # order_size = self.check_items.count * 20
     # page_height = header_size + footer_size + order_size
-    page_height = 150
+    page_height = 170
     # Если высота чека меньше ширины выставляем высоту больше, для получения landscape ориентации
     page_height = 82 if page_height < 82
     return page_height

@@ -16,6 +16,22 @@ class CashBoxAnalitic < ApplicationRecord
     ]
   end
 
+  def set_not_paid shift
+    if cash_box.title == "Наличные"
+      self.purchaseSumm = shift[:purchaseSumm]
+      self.notPaidStaffSumm = shift[:notPaidStaffSumm]
+      self.notPaidClientsSumm = shift[:notPaidClientsSumm]
+    else
+      self.purchaseSumm = 0
+      self.notPaidStaffSumm = 0
+      self.notPaidClientsSumm = 0
+    end
+  end
+
+  def set_diff_cash_v2
+    self.diffCash = realCash - cash + purchaseSumm + notPaidStaffSumm + notPaidClientsSumm
+  end
+
   def fix_cash purchaseSumm, notPaidStaffSumm
     transaction do
       self.cash = cash_box.cash

@@ -12,6 +12,18 @@ class CheckItem < ApplicationRecord
     ]
   end
 
+  def self.store_cat_analitic_v2(array_cat_title)
+    result = {}
+    array_cat_title.each do |cat_title|
+      stmncat = StoreMenuCategory.find_by(title: cat_title)
+      check_items_ass = where(tech_card_id: stmncat.tech_cards.ids)
+      summ = check_items_ass.sum(:summ)
+      qty = check_items_ass.sum(:qty)
+      result[cat_title] = {summ: summ, qty: qty}
+    end
+    result
+  end
+
   # def self.front_view_with_name_key
   #   f_v = {}
   #   all.includes(:tech_card).find_each do |check_item|

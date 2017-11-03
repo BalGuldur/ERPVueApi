@@ -15,55 +15,31 @@ class Check < ApplicationRecord
     ]
   end
 
-  # def self.front_view_with_name_key
-  #   f_v = {}
-  #   all.includes(:check_items, :cash_box).find_each do |check|
-  #     f_v.merge!(check.front_view_with_key)
-  #   end
-  #   {checks: f_v}
-  # end
-  #
-  # def self.front_view
-  #   f_v = {}
-  #   all.each do |check|
-  #     f_v.merge!(check.front_view_with_key)
-  #   end
-  #   f_v
-  # end
-
   def paid
     if paidOn.nil?
       transaction do
         check_items.each &:fix_store
         self.paidOn = DateTime.now
         save!
-        cash_box.change_cash summ, id
+        # TODO: Посмотреть что сделать с change_cash
+        # cash_box.change_cash summ, id
         # Выбираем открытый рабочий день или создаем новый
-        @work_day = WorkDay.where(closeOn: nil).last
-        @work_day = WorkDay.new(openOn: DateTime.now) if !@work_day.present?
+        @work_day = WorkDay.active_or_new
+        # @work_day = WorkDay.where(closeOn: nil).last
+        # @work_day = WorkDay.new(openOn: DateTime.now) if !@work_day.present?
         # Выбираем открыую смену или создаем новую
-        @shift = @work_day.shifts.where(closeOn: nil).last
-        @shift = Shift.new(work_day: @work_day, openOn: DateTime.now) if !@shift.present?
+        @shift = @work_day.active_shift_or_new
+        # @shift = @work_day.shifts.where(closeOn: nil).last
+        # @shift = Shift.new(work_day: @work_day, openOn: DateTime.now) if !@shift.present?
         @work_day.save!
         @shift.save!
         self.shift = @shift
         save!
-        check_items.each &:fix_cat_analitic
+        # TODO: Посмотреть что сделать с fix_cat_analitic
+        # check_items.each &:fix_cat_analitic
       end
     end
   end
-
-  # def front_view_with_name_key
-  #   {checks: front_view_with_key}
-  # end
-  #
-  # def front_view_with_key
-  #   {id => front_view}
-  # end
-  #
-  # def front_view
-  #   as_json(methods: [:check_item_ids, :cash_box_id])
-  # end
 
   def summ_without_disc
     result = 0

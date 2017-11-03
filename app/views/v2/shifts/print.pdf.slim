@@ -1,0 +1,89 @@
+html
+  head
+  body
+    h3 align="center" Пентхаус Поднебесная
+    text align="center"
+      div
+        = @shift.employee
+    text align="center"
+      div Смена открыта
+      div
+        = @shift.openOn
+    text align="center"
+      div Смена закрыта
+      div
+        = @shift.closeOn
+    table
+      tbody
+        tr
+          td
+            small Закупка
+          td
+            small Стафф
+          td
+            small В долг
+        tr
+          td colspan="3" -----------------------------------------
+        tr
+          td
+            small
+              = @shift.purchaseSumm
+          td
+            small
+              = @shift.notPaidStaffSumm
+          td
+            small
+              = @shift.notPaidClientsSumm
+        tr
+          td colspan="3" -----------------------------------------
+    table
+      tbody
+        tr
+          td
+            small Касса
+          td
+            small Сист.
+          td
+            small Введ.
+          td
+            small Расхож
+        tr
+          td colspan="4" -----------------------------------------
+        - @shift.cash_box_analitics.each do |cash_box_an|
+          tr
+            td
+              small
+                = cash_box_an.cashBoxSave['title']
+            td
+              small
+                = cash_box_an.cash
+            td
+              small
+                = cash_box_an.realCash
+            td
+              small
+                = cash_box_an.diffCash
+        tr
+          td colspan="4" -----------------------------------------
+    table
+      tbody
+        tr
+          td
+            small Категория
+          td
+            small Кол-во
+          td
+            small Сумма
+        tr
+          td colspan="3" -----------------------------------------
+        - @store_menu_cat_analitics.each do |title, values|
+          tr
+            td
+              small
+                = title
+            td
+              small
+                = values[:qty]
+            td
+              small
+                = values[:summ]

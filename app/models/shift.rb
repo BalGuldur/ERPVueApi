@@ -5,6 +5,7 @@ class Shift < ApplicationRecord
   has_many :cash_box_analitics, dependent: :destroy
   has_many :store_menu_cat_analitics, dependent: :destroy
   has_many :checks, dependent: :destroy
+  has_many :check_items, through: :checks
 
   # Определение связей для генерации front veiw
   # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
@@ -18,6 +19,35 @@ class Shift < ApplicationRecord
 
   def store_cat_analitic
     self.store_menu_cat_analitics.includes(:store_menu_category).group(:title).sum(:qty)
+  end
+
+  def set_not_paid(purchaseSumm, notPaidStaffSumm, notPaidClientsSumm)
+    puts "set_not_paid #{purchaseSumm}, #{notPaidStaffSumm}, #{notPaidClientsSumm}"
+    self.purchaseSumm = purchaseSumm
+    self.notPaidStaffSumm = notPaidStaffSumm
+    self.notPaidClientsSumm = notPaidClientsSumm
+  end
+
+  def close_v2(shift, realCashes)
+    transaction do
+      self.closeOn = DateTime.now
+      save!
+      self.employee = shift["employee"]
+      self.set_not_paid shift[:purchaseSumm], shift[:notPaidStaffSumm], shift[:notPaidClientsSumm]
+      # puts "shift #{shift[:employee]}"
+      realCashes.each do |realCash|
+        @cash_box = CashBox.find(realCash[:cash_box_id])
+        @system_cash = checks.where(cash_box: @cash_box).sum(:summ)
+        @cash_box_analitic = CashBoxAnalitic.new(cash_box: @cash_box,
+                                                 cash: @system_cash,
+                                                 realCash: realCash[:realCash],
+                                                 cashBoxSave: @cash_box.as_json)
+        @cash_box_analitic.set_not_paid shift
+        @cash_box_analitic.set_diff_cash_v2
+        self.cash_box_analitics << @cash_box_analitic
+      end
+      save!
+    end
   end
 
   def close(employee, purchaseSumm, notPaidStaffSumm, cashBoxes)
@@ -94,7 +124,7 @@ class Shift < ApplicationRecord
     # footer_size = 40
     # order_size = self.check_items.count * 20
     # page_height = header_size + footer_size + order_size
-    page_height = 150
+    page_height = 170
     # Если высота чека меньше ширины выставляем высоту больше, для получения landscape ориентации
     page_height = 82 if page_height < 82
     return page_height

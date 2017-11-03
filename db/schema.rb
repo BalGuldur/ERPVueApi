@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013131302) do
+ActiveRecord::Schema.define(version: 20171102111400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,10 +41,11 @@ ActiveRecord::Schema.define(version: 20171013131302) do
     t.float    "realCash"
     t.float    "cash"
     t.float    "purchaseSumm"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.float    "diffCash"
     t.float    "notPaidStaffSumm"
+    t.float    "notPaidClientsSumm"
     t.index ["cash_box_id"], name: "index_cash_box_analitics_on_cash_box_id", using: :btree
     t.index ["shift_id"], name: "index_cash_box_analitics_on_shift_id", using: :btree
   end
@@ -231,8 +232,11 @@ ActiveRecord::Schema.define(version: 20171013131302) do
     t.datetime "openOn"
     t.datetime "closeOn"
     t.integer  "work_day_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.float    "purchaseSumm"
+    t.float    "notPaidStaffSumm"
+    t.float    "notPaidClientsSumm"
     t.index ["work_day_id"], name: "index_shifts_on_work_day_id", using: :btree
   end
 

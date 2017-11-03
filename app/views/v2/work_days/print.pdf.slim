@@ -1,0 +1,99 @@
+html
+  head
+  body
+    h3 align="center" Пентхаус Поднебесная
+    text align="center"
+      . День открыт
+      div
+        = @work_day.openOn
+    text align="center"
+      . День закрыт
+      div
+        = @work_day.closeOn
+    table
+      tbody
+        tr
+          td
+            small Закупка
+          td
+            small Стафф
+          td
+            small В долг
+        tr
+          td colspan="3" -----------------------------------------
+        tr
+          td
+            small
+              = @work_day.shifts.sum(:purchaseSumm)
+          td
+            small
+              = @work_day.shifts.sum(:notPaidStaffSumm)
+          td
+            small
+              = @work_day.shifts.sum(:notPaidClientsSumm)
+        tr
+          td colspan="3" -----------------------------------------
+    table
+      tbody
+        tr
+          td
+            small Касса
+          td
+            small Сист.
+          td
+            small Введено
+          td
+            small Закуп
+          td
+            small Расхож
+        tr
+          td colspan="5" -----------------------------------------
+        table
+          tbody
+            tr
+              td
+                small Касса
+              td
+                small Сист.
+              td
+                small Введено
+              td
+                small Расхож
+            tr
+              td colspan="4" -----------------------------------------
+            - @cash_boxes.each do |cash_box_title|
+              tr
+                td
+                  small
+                    = cash_box_title
+                td
+                  small
+                    = @cash[cash_box_title]
+                td
+                  small
+                    = @realCash[cash_box_title]
+                td
+                  small
+                    = @diffCash[cash_box_title]
+    table
+      tbody
+        tr
+          td
+            small Категория
+          td
+            small Кол-во
+          td
+            small Сумма
+        tr
+          td colspan="3" -----------------------------------------
+        - @store_menu_cat_analitics.each do |title, values|
+          tr
+            td
+              small
+                = title
+            td
+              small
+                = values[:qty]
+            td
+              small
+                = values[:summ]
