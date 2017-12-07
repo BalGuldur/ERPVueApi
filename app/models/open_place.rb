@@ -14,8 +14,8 @@ class OpenPlace < ApplicationRecord
   # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
   def self.refs
     [
-        { model: 'places', type: 'many', rev_type: 'one', index_inc: false },
-        { model: 'orders', type: 'many', rev_type: 'one', index_inc: false }
+      { model: 'places', type: 'many', rev_type: 'one', index_inc: false },
+      { model: 'orders', type: 'many', rev_type: 'one', index_inc: false }
     ]
   end
 

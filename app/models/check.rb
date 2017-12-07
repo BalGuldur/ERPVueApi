@@ -11,7 +11,7 @@ class Check < ApplicationRecord
   # { model: '', type: 'many/one', rev_type: 'many/one', index_inc: true/false }
   def self.refs
     [
-        { model: 'check_items', type: 'many', rev_type: 'one', index_inc: true },
+      { model: 'check_items', type: 'many', rev_type: 'one', index_inc: true },
     ]
   end
 
