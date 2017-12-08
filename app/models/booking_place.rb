@@ -3,6 +3,7 @@
 class BookingPlace < ApplicationRecord
   include FrontViewSecond
   before_destroy :reset_place_reference
+  before_create :create_client_if_empty
 
   acts_as_paranoid
 
@@ -34,27 +35,13 @@ class BookingPlace < ApplicationRecord
     end
   end
 
-  # Стандартный вывод для front_view
-  # def self.front_view
-  #   f_v = {}
-  #   all.includes(:places).find_each do |booking_place|
-  #     f_v.merge!(booking_place.front_view[:bookingPlaces])
-  #   end
-  #   { bookingPlaces: f_v }
-  # end
-  #
-  # def front_view
-  #   { bookingPlaces: { id => json_front } }
-  # end
-  #
-  # def json_front
-  #   as_json(methods: [:place_ids])
-  # end
-
   private
 
   def reset_place_reference
-    # places.find_each { |place| place.update open_place_id: nil }
     update places: []
+  end
+
+  def create_client_if_empty
+    Client.create(name: name, phones: [phone]) if Client.phone_present? phone
   end
 end
